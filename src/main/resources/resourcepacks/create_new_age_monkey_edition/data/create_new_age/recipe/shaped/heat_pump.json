@@ -1,20 +1,15 @@
 {
-  "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "P": {
-      "item": "create_new_age:heat_pipe"
-    },
-    "T": {
-      "item": "minecraft:redstone"
-    }
+    "P": "create_new_age:heat_pipe",
+    "T": "minecraft:redstone"
   },
   "pattern": [
     "PTP"
   ],
   "result": {
-    "count": 1,
     "id": "create_new_age:heat_pump"
   },
-  "show_notification": true
+  "show_notification": true,
+  "type": "minecraft:crafting_shaped"
 }

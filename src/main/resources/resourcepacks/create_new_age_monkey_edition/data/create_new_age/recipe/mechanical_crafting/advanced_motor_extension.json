@@ -1,7 +1,8 @@
 {
-  "neoforge:conditions":[
-    {
-      "type": "neoforge:never"
+  "fabric:load_conditions": {
+    "condition": "fabric:not",
+    "value": {
+      "condition": "fabric:true"
     }
-  ]
+  }
 }

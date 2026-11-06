@@ -1,19 +1,10 @@
 {
-  "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "C": {
-      "item": "create:brass_casing"
-    },
-    "I": {
-      "item": "minecraft:iron_block"
-    },
-    "N": {
-      "tag": "c:nuggets/gold"
-    },
-    "S": {
-      "item": "create:shaft"
-    }
+    "C": "create:brass_casing",
+    "I": "minecraft:iron_block",
+    "N": "#c:nuggets/gold",
+    "S": "create:shaft"
   },
   "pattern": [
     "NNN",
@@ -21,8 +12,8 @@
     "NNN"
   ],
   "result": {
-    "count": 1,
     "id": "create_new_age:advanced_motor"
   },
-  "show_notification": true
+  "show_notification": true,
+  "type": "minecraft:crafting_shaped"
 }

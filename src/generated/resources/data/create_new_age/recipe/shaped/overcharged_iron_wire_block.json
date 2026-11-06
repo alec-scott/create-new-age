@@ -1,17 +1,14 @@
 {
-  "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "W": {
-      "item": "create_new_age:overcharged_iron_wire"
-    }
+    "W": "create_new_age:overcharged_iron_wire"
   },
   "pattern": [
     "WW",
     "WW"
   ],
   "result": {
-    "count": 1,
     "id": "create_new_age:overcharged_iron_wire_block"
-  }
+  },
+  "type": "minecraft:crafting_shaped"
 }

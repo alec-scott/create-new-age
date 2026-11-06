@@ -1,58 +1,35 @@
 {
-  "type": "create:sequenced_assembly",
-  "ingredient": {
-    "item": "create_new_age:radioactive_thorium"
+  "ingredient": "create_new_age:radioactive_thorium",
+  "loops": 1,
+  "result": {
+    "id": "create_new_age:nuclear_fuel"
   },
-  "results": [
-    {
-      "id": "create_new_age:nuclear_fuel"
-    }
-  ],
   "sequence": [
     {
-      "type": "create:pressing",
-      "ingredients": [
-        {
-          "item": "create_new_age:incomplete_fuel"
-        }
-      ],
+      "ingredient": "$ingredient",
       "results": [
-        {
-          "id": "create_new_age:incomplete_fuel"
-        }
-      ]
+        "$result"
+      ],
+      "type": "create:pressing"
     },
     {
-      "type": "create:deploying",
-      "ingredients": [
-        {
-          "item": "create_new_age:incomplete_fuel"
-        },
-        {
-          "tag": "c:plates/iron"
-        }
-      ],
+      "ingredient": "#c:plates/iron",
       "results": [
-        {
-          "id": "create_new_age:incomplete_fuel"
-        }
-      ]
+        "$result"
+      ],
+      "target": "$ingredient",
+      "type": "create:deploying"
     },
     {
-      "type": "create:pressing",
-      "ingredients": [
-        {
-          "item": "create_new_age:incomplete_fuel"
-        }
-      ],
+      "ingredient": "$ingredient",
       "results": [
-        {
-          "id": "create_new_age:incomplete_fuel"
-        }
-      ]
+        "$result"
+      ],
+      "type": "create:pressing"
     }
   ],
   "transitional_item": {
     "id": "create_new_age:incomplete_fuel"
-  }
+  },
+  "type": "create:sequenced_assembly"
 }
