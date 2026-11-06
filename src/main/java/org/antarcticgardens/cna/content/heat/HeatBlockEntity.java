@@ -1,7 +1,7 @@
 package org.antarcticgardens.cna.content.heat;
 
-import com.simibubi.create.foundation.utility.CreateLang;
-import net.createmod.catnip.lang.LangBuilder;
+import com.zurrtum.create.client.foundation.utility.CreateLang;
+import com.zurrtum.create.client.catnip.lang.LangBuilder;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -12,7 +12,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.antarcticgardens.cna.config.CNAConfig;
 import org.antarcticgardens.cna.util.StringFormatUtil;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public interface HeatBlockEntity {

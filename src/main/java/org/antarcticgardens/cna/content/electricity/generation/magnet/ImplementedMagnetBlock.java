@@ -1,7 +1,7 @@
 package org.antarcticgardens.cna.content.electricity.generation.magnet;
 
-import com.simibubi.create.foundation.utility.CreateLang;
-import com.tterrag.registrate.util.nullness.NonNullFunction;
+import com.zurrtum.create.client.foundation.utility.CreateLang;
+import org.antarcticgardens.cna.port.registrate.util.nullness.NonNullFunction;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;

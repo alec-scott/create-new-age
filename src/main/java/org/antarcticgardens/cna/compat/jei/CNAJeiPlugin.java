@@ -6,7 +6,7 @@ import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeInput;
 import org.antarcticgardens.cna.CNARecipeTypes;
@@ -20,8 +20,8 @@ public class CNAJeiPlugin implements IModPlugin {
     public static CreateRecipeCategory<?> energisingType;
 
     @Override
-    public ResourceLocation getPluginUid() {
-        return ResourceLocation.fromNamespaceAndPath(CreateNewAge.MOD_ID, "jei_plugin");
+    public Identifier getPluginUid() {
+        return Identifier.fromNamespaceAndPath(CreateNewAge.MOD_ID, "jei_plugin");
     }
 
     @Override
@@ -32,7 +32,7 @@ public class CNAJeiPlugin implements IModPlugin {
                 .catalyst(CNABlocks.ADVANCED_ENERGISER::get)
                 .catalyst(CNABlocks.REINFORCED_ENERGISER::get)
                 .itemIcon(CNABlocks.BASIC_ENERGISER.get())
-                .build(ResourceLocation.fromNamespaceAndPath(CreateNewAge.MOD_ID, "energising"), EnergisingJeiCategory::new);
+                .build(Identifier.fromNamespaceAndPath(CreateNewAge.MOD_ID, "energising"), EnergisingJeiCategory::new);
         registration.addRecipeCategories(
                 energisingType
         );
@@ -58,7 +58,7 @@ public class CNAJeiPlugin implements IModPlugin {
         }
 
         @Override
-        public CreateRecipeCategory<T> build(ResourceLocation id, CreateRecipeCategory.Factory<T> factory) {
+        public CreateRecipeCategory<T> build(Identifier id, CreateRecipeCategory.Factory<T> factory) {
             CreateRecipeCategory<T> category = super.build(id, factory);
             return category;
         }

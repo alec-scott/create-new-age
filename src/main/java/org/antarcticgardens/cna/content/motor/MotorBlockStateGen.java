@@ -1,14 +1,14 @@
 package org.antarcticgardens.cna.content.motor;
 
-import com.simibubi.create.content.kinetics.motor.CreativeMotorBlock;
-import com.simibubi.create.foundation.data.SpecialBlockStateGen;
-import com.tterrag.registrate.providers.DataGenContext;
-import com.tterrag.registrate.providers.RegistrateBlockstateProvider;
+import com.zurrtum.create.content.kinetics.motor.CreativeMotorBlock;
+import org.antarcticgardens.cna.port.create.foundation.data.SpecialBlockStateGen;
+import org.antarcticgardens.cna.port.registrate.providers.DataGenContext;
+import org.antarcticgardens.cna.port.registrate.providers.RegistrateBlockstateProvider;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
-import net.neoforged.neoforge.client.model.generators.ModelFile;
+import org.antarcticgardens.cna.port.porting_lib.models.generators.ModelFile;
 
 public class MotorBlockStateGen extends SpecialBlockStateGen {
     private final String parentModelId;

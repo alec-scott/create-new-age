@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "package": "org.antarcticgardens.cna.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "port.SpawnPlacementsAccessor"
+  ],
+  "client": [],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "minVersion": "0.8"
+}

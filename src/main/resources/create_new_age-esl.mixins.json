@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "package": "org.antarcticgardens.cna.port.esl.fabric.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "SnapshotParticipantInvoker"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "minVersion": "0.8"
+}

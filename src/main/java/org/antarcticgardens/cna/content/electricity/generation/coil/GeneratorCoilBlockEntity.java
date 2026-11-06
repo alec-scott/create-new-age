@@ -1,9 +1,9 @@
 package org.antarcticgardens.cna.content.electricity.generation.coil;
 
 import com.google.common.collect.Lists;
-import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
-import com.simibubi.create.content.kinetics.base.RotatedPillarKineticBlock;
-import com.simibubi.create.foundation.utility.CreateLang;
+import com.zurrtum.create.content.kinetics.base.KineticBlockEntity;
+import com.zurrtum.create.content.kinetics.base.RotatedPillarKineticBlock;
+import com.zurrtum.create.client.foundation.utility.CreateLang;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;

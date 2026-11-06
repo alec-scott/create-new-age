@@ -1,7 +1,7 @@
 package org.antarcticgardens.cna.content.heat.heater;
 
-import com.simibubi.create.content.equipment.wrench.IWrenchable;
-import com.simibubi.create.content.processing.burner.BlazeBurnerBlock;
+import com.zurrtum.create.content.equipment.wrench.IWrenchable;
+import com.zurrtum.create.content.processing.burner.BlazeBurnerBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;

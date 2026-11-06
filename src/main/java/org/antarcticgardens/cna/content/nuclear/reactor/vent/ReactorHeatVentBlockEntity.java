@@ -1,7 +1,7 @@
 package org.antarcticgardens.cna.content.nuclear.reactor.vent;
 
-import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
-import com.simibubi.create.foundation.utility.CreateLang;
+import com.zurrtum.create.client.api.goggles.IHaveGoggleInformation;
+import com.zurrtum.create.client.foundation.utility.CreateLang;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

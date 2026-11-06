@@ -1,8 +1,8 @@
 package org.antarcticgardens.cna.content.electricity.network;
 
 import org.antarcticgardens.cna.content.electricity.connector.AbstractElectricalConnector;
-import org.antarcticgardens.esl.energy.EnergyStorage;
-import org.antarcticgardens.esl.transaction.SnapshotParticipant;
+import org.antarcticgardens.cna.port.esl.energy.EnergyStorage;
+import org.antarcticgardens.cna.port.esl.transaction.SnapshotParticipant;
 
 import java.util.HashMap;
 import java.util.Map;

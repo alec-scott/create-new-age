@@ -1,10 +1,10 @@
 package org.antarcticgardens.cna;
 
-import com.simibubi.create.AllPartialModels;
-import com.simibubi.create.content.kinetics.base.KineticBlockEntityRenderer;
-import com.simibubi.create.content.kinetics.base.OrientedRotatingVisual;
-import com.simibubi.create.content.kinetics.base.SingleAxisRotatingVisual;
-import com.tterrag.registrate.util.entry.BlockEntityEntry;
+import com.zurrtum.create.client.AllPartialModels;
+import com.zurrtum.create.client.content.kinetics.base.KineticBlockEntityRenderer;
+import com.zurrtum.create.client.content.kinetics.base.OrientedRotatingVisual;
+import com.zurrtum.create.client.content.kinetics.base.SingleAxisRotatingVisual;
+import org.antarcticgardens.cna.port.registrate.util.entry.BlockEntityEntry;
 import org.antarcticgardens.cna.content.electricity.connector.ElectricalConnectorBlockEntity;
 import org.antarcticgardens.cna.content.electricity.connector.ElectricalConnectorRenderer;
 import org.antarcticgardens.cna.content.electricity.generation.brushes.CarbonBrushesBlockEntity;
@@ -101,7 +101,7 @@ public class CNABlockEntityTypes {
             .register();
 
     public static final BlockEntityEntry<ReactorFuelAcceptorBlockEntity> REACTOR_FUEL_ACCEPTOR = REGISTRATE
-            .blockEntity("reactor_fuel_acceptor", CreateNewAge.getInstance().getPlatform()::platformReactorFuelAcceptorBlockEntity)
+            .blockEntity("reactor_fuel_acceptor", ReactorFuelAcceptorBlockEntity::new)
             .validBlocks(CNABlocks.REACTOR_FUEL_ACCEPTOR)
             .register();
 

@@ -1,10 +1,10 @@
 package org.antarcticgardens.cna.data.recipe;
 
 import com.simibubi.create.content.processing.recipe.StandardProcessingRecipe;
-import com.simibubi.create.content.processing.sequenced.SequencedAssemblyRecipe;
+import com.zurrtum.create.content.processing.sequenced.SequencedAssemblyRecipe;
 import com.simibubi.create.content.processing.sequenced.SequencedAssemblyRecipeBuilder;
 import com.simibubi.create.content.processing.sequenced.SequencedRecipe;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -17,7 +17,7 @@ import java.util.function.Function;
 import java.util.function.UnaryOperator;
 
 public class CNASequencedAssemblyRecipeBuilder extends SequencedAssemblyRecipeBuilder {
-    public CNASequencedAssemblyRecipeBuilder(ResourceLocation id) {
+    public CNASequencedAssemblyRecipeBuilder(Identifier id) {
         super(id);
     }
 
@@ -37,7 +37,7 @@ public class CNASequencedAssemblyRecipeBuilder extends SequencedAssemblyRecipeBu
     public <R extends EnergisingRecipe> SequencedAssemblyRecipeBuilder addStep(
             EnergisingRecipe.Factory<EnergisingRecipeParams, R> factory,
             UnaryOperator<EnergisingRecipe.Builder<R>> builder) {
-        return addStep((Function<ResourceLocation, EnergisingRecipe.Builder<R>>)
+        return addStep((Function<Identifier, EnergisingRecipe.Builder<R>>)
                 id -> new EnergisingRecipe.Builder<>(factory, id), builder);
     }
 

@@ -2,13 +2,13 @@ package org.antarcticgardens.cna.rendering;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import com.simibubi.create.Create;
+import com.zurrtum.create.Create;
 import com.simibubi.create.foundation.item.render.CustomRenderedItemModel;
 import com.simibubi.create.foundation.item.render.CustomRenderedItemModelRenderer;
 import com.simibubi.create.foundation.item.render.PartialItemModelRenderer;
-import com.tterrag.registrate.builders.ItemBuilder;
-import com.tterrag.registrate.util.nullness.NonNullUnaryOperator;
-import dev.engine_room.flywheel.lib.model.baked.PartialModel;
+import org.antarcticgardens.cna.port.registrate.builders.ItemBuilder;
+import org.antarcticgardens.cna.port.registrate.util.nullness.NonNullUnaryOperator;
+import com.zurrtum.create.client.flywheel.lib.model.baked.PartialModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;

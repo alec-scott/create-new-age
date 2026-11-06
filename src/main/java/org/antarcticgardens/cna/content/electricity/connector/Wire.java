@@ -2,7 +2,7 @@ package org.antarcticgardens.cna.content.electricity.connector;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.renderer.LightTexture;
+import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
@@ -74,7 +74,7 @@ public class Wire {
             BlockPos lightBlockPos = BlockPos.containing(new Vec3(lightPos));
             int block = level.getBrightness(LightLayer.BLOCK, lightBlockPos);
             int sky = level.getBrightness(LightLayer.SKY, lightBlockPos);
-            int light = LightTexture.pack(block, sky);
+            int light = LightCoordsUtil.pack(block, sky);
 
             float catenary = catenary(sectionId, totalLength, sectionsAmount) * catenaryScalar;
             float ht = thickness / 2;

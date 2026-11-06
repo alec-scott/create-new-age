@@ -43,3 +43,5 @@ replay_*.log
 # datagen
 
 **/generated/resources/.cache/
+build.txt
+errs.txt

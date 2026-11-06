@@ -1,13 +1,13 @@
 package org.antarcticgardens.cna.data.worldgen;
 
-import com.simibubi.create.infrastructure.worldgen.ConfigPlacementFilter;
+import com.zurrtum.create.infrastructure.worldgen.ConfigPlacementFilter;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.placement.*;
@@ -29,7 +29,7 @@ public class CNAPlacedFeatures {
     }
 
     private static ResourceKey<PlacedFeature> key(String name) {
-        return ResourceKey.create(Registries.PLACED_FEATURE, ResourceLocation.fromNamespaceAndPath(CreateNewAge.MOD_ID, name));
+        return ResourceKey.create(Registries.PLACED_FEATURE, Identifier.fromNamespaceAndPath(CreateNewAge.MOD_ID, name));
     }
 
     public static List<PlacementModifier> placement(PlacementModifier frequency, int minHeight, int maxHeight) {

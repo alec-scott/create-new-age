@@ -1,8 +1,8 @@
 package org.antarcticgardens.cna.content.nuclear.reactor.rod;
 
-import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
-import com.simibubi.create.foundation.utility.CreateLang;
-import net.createmod.catnip.lang.LangBuilder;
+import com.zurrtum.create.client.api.goggles.IHaveGoggleInformation;
+import com.zurrtum.create.client.foundation.utility.CreateLang;
+import com.zurrtum.create.client.catnip.lang.LangBuilder;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

@@ -1,6 +1,6 @@
 package org.antarcticgardens.cna.content.heat.pump;
 
-import com.simibubi.create.content.equipment.wrench.IWrenchable;
+import com.zurrtum.create.content.equipment.wrench.IWrenchable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -16,7 +16,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -40,7 +40,7 @@ public class HeatPumpBlock extends Block implements EntityBlock, IWrenchable {
     public static BooleanProperty SOUTH = BlockStateProperties.SOUTH;
     public static BooleanProperty WEST = BlockStateProperties.WEST;
 
-    public static DirectionProperty FACING = BlockStateProperties.FACING;
+    public static EnumProperty<Direction> FACING = BlockStateProperties.FACING;
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {

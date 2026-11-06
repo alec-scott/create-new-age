@@ -7,10 +7,10 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.antarcticgardens.cna.content.electricity.connector.AbstractElectricalConnector;
 import org.antarcticgardens.cna.content.electricity.connector.ElectricalConnectorBlock;
-import org.antarcticgardens.esl.energy.EnergyStorage;
-import org.antarcticgardens.esl.transaction.Transaction;
-import org.antarcticgardens.esl.transaction.TransactionContext;
-import org.antarcticgardens.esl.transaction.TransactionStack;
+import org.antarcticgardens.cna.port.esl.energy.EnergyStorage;
+import org.antarcticgardens.cna.port.esl.transaction.Transaction;
+import org.antarcticgardens.cna.port.esl.transaction.TransactionContext;
+import org.antarcticgardens.cna.port.esl.transaction.TransactionStack;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;

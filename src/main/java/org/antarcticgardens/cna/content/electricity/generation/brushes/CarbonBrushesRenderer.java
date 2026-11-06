@@ -1,11 +1,13 @@
 package org.antarcticgardens.cna.content.electricity.generation.brushes;
 
+import net.minecraft.client.renderer.rendertype.RenderTypes;
+
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.simibubi.create.content.kinetics.base.KineticBlockEntityRenderer;
-import com.simibubi.create.content.kinetics.base.ShaftRenderer;
-import net.createmod.catnip.render.CachedBuffers;
-import net.createmod.catnip.render.SuperByteBuffer;
+import com.zurrtum.create.client.content.kinetics.base.KineticBlockEntityRenderer;
+import com.zurrtum.create.client.content.kinetics.base.ShaftRenderer;
+import com.zurrtum.create.client.catnip.render.CachedBuffers;
+import com.zurrtum.create.client.catnip.render.SuperByteBuffer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -23,7 +25,7 @@ public class CarbonBrushesRenderer extends ShaftRenderer<CarbonBrushesBlockEntit
     protected void renderSafe(CarbonBrushesBlockEntity be, float partialTicks, PoseStack ms, MultiBufferSource buffer, int light, int overlay) {
         super.renderSafe(be, partialTicks, ms, buffer, light, overlay);
 
-        VertexConsumer consumer = buffer.getBuffer(RenderType.solid());
+        VertexConsumer consumer = buffer.getBuffer(RenderTypes.solid());
         BlockState state = be.getBlockState();
         Direction dir = state.getValue(BlockStateProperties.FACING);
 

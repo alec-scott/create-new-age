@@ -1,12 +1,12 @@
 package org.antarcticgardens.cna;
 
 import com.google.gson.JsonObject;
-import com.simibubi.create.AllSoundEvents;
+import com.zurrtum.create.AllSoundEvents;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundSource;
 
 import java.nio.file.Path;
@@ -15,10 +15,10 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 public class CNASounds {
-    public static final Map<ResourceLocation, AllSoundEvents.SoundEntry> CNASounds = new HashMap<>();
+    public static final Map<Identifier, AllSoundEvents.SoundEntry> CNASounds = new HashMap<>();
 
     public static final AllSoundEvents.SoundEntry GEIGER_COUNTER =
-            new CNASoundEntryBuilder(ResourceLocation.fromNamespaceAndPath(CreateNewAge.MOD_ID, "geiger_counter"))
+            new CNASoundEntryBuilder(Identifier.fromNamespaceAndPath(CreateNewAge.MOD_ID, "geiger_counter"))
                     .subtitle("Geiger Counter Clicking")
                     .category(SoundSource.PLAYERS)
                     .build();
@@ -30,7 +30,7 @@ public class CNASounds {
 
     public static class CNASoundEntryBuilder extends AllSoundEvents.SoundEntryBuilder {
 
-        public CNASoundEntryBuilder(ResourceLocation id) {
+        public CNASoundEntryBuilder(Identifier id) {
             super(id);
         }
 

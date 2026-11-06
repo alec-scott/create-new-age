@@ -1,8 +1,8 @@
 package org.antarcticgardens.cna.content.heat.plate;
 
-import com.simibubi.create.content.equipment.wrench.IWrenchable;
-import com.simibubi.create.foundation.utility.CreateLang;
-import com.tterrag.registrate.util.entry.BlockEntityEntry;
+import com.zurrtum.create.content.equipment.wrench.IWrenchable;
+import com.zurrtum.create.client.foundation.utility.CreateLang;
+import org.antarcticgardens.cna.port.registrate.util.entry.BlockEntityEntry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;

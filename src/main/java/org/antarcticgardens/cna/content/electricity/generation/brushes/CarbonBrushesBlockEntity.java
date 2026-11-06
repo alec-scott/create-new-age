@@ -1,11 +1,10 @@
 package org.antarcticgardens.cna.content.electricity.generation.brushes;
 
-import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
-import com.simibubi.create.compat.computercraft.AbstractComputerBehaviour;
-import com.simibubi.create.content.kinetics.base.DirectionalKineticBlock;
-import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
-import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
-import com.simibubi.create.foundation.utility.CreateLang;
+import com.zurrtum.create.client.api.goggles.IHaveGoggleInformation;
+import com.zurrtum.create.content.kinetics.base.DirectionalKineticBlock;
+import com.zurrtum.create.content.kinetics.base.KineticBlockEntity;
+import com.zurrtum.create.api.behaviour.BlockEntityBehaviour;
+import com.zurrtum.create.client.foundation.utility.CreateLang;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -15,16 +14,15 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.antarcticgardens.cna.CNABlockEntityTypes;
-import org.antarcticgardens.cna.compat.computercraft.CNAComputerCraftProxy;
 import org.antarcticgardens.cna.config.CNAConfig;
 import org.antarcticgardens.cna.content.electricity.generation.coil.GeneratorCoilBlock;
 import org.antarcticgardens.cna.content.electricity.generation.coil.GeneratorCoilBlockEntity;
 import org.antarcticgardens.cna.util.StringFormatUtil;
-import org.antarcticgardens.esl.energy.EnergyHelper;
-import org.antarcticgardens.esl.energy.EnergyStorage;
-import org.antarcticgardens.esl.energy.SimpleEnergyStorage;
-import org.antarcticgardens.esl.transaction.Transaction;
-import org.antarcticgardens.esl.transaction.TransactionStack;
+import org.antarcticgardens.cna.port.esl.energy.EnergyHelper;
+import org.antarcticgardens.cna.port.esl.energy.EnergyStorage;
+import org.antarcticgardens.cna.port.esl.energy.SimpleEnergyStorage;
+import org.antarcticgardens.cna.port.esl.transaction.Transaction;
+import org.antarcticgardens.cna.port.esl.transaction.TransactionStack;
 
 import java.util.List;
 
@@ -33,7 +31,6 @@ public class CarbonBrushesBlockEntity extends KineticBlockEntity implements IHav
 
     private int lastOutput = 0;
 
-    public AbstractComputerBehaviour computerBehaviour;
 
     public CarbonBrushesBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
@@ -61,13 +58,11 @@ public class CarbonBrushesBlockEntity extends KineticBlockEntity implements IHav
     @Override
     public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
         super.addBehaviours(behaviours);
-        behaviours.add(computerBehaviour = CNAComputerCraftProxy.behaviour(this));
     }
 
     @Override
     public void invalidate() {
         super.invalidate();
-        computerBehaviour.removePeripheral();
     }
 
     @Override

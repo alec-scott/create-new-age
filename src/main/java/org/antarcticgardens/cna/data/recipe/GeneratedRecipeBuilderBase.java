@@ -1,14 +1,14 @@
 package org.antarcticgardens.cna.data.recipe;
 
-import com.tterrag.registrate.providers.RegistrateRecipeProvider;
+import org.antarcticgardens.cna.port.registrate.providers.RegistrateRecipeProvider;
 import net.createmod.catnip.platform.CatnipServices;
-import net.createmod.catnip.registry.RegisteredObjectsHelper;
+import com.zurrtum.create.catnip.registry.RegisteredObjectsHelper;
 import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.CriterionTriggerInstance;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.data.recipes.RecipeCategory;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
@@ -58,12 +58,12 @@ public abstract class GeneratedRecipeBuilderBase<SELF> {
         return (SELF) this;
     }
 
-    protected ResourceLocation createLocation() {
+    protected Identifier createLocation() {
         return createLocation("");
     }
 
-    protected ResourceLocation createLocation(String type) {
+    protected Identifier createLocation(String type) {
         String name = this.name == null ? RegisteredObjectsHelper.getKeyOrThrow(result.asItem()).getPath() : this.name;
-        return ResourceLocation.fromNamespaceAndPath(CreateNewAge.MOD_ID, type + (type.isEmpty() ? "" : "/") + name + suffix);
+        return Identifier.fromNamespaceAndPath(CreateNewAge.MOD_ID, type + (type.isEmpty() ? "" : "/") + name + suffix);
     }
 }

@@ -1,17 +1,19 @@
 package org.antarcticgardens.cna;
 
+import net.minecraft.client.renderer.rendertype.RenderTypes;
+
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.Util;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import java.util.function.Function;
 
 public class CNARenderTypes extends RenderType {
-    private static final Function<ResourceLocation, RenderType> WIRE = Util.memoize(arg ->
-            RenderType.create(
+    private static final Function<Identifier, RenderType> WIRE = Util.memoize(arg ->
+            RenderTypes.create(
                     "wire",
                     DefaultVertexFormat.BLOCK,
                     VertexFormat.Mode.QUADS,
@@ -26,7 +28,7 @@ public class CNARenderTypes extends RenderType {
                             .createCompositeState(false)
             ));
 
-    public static RenderType wire(ResourceLocation texture) {
+    public static RenderType wire(Identifier texture) {
         return WIRE.apply(texture);
     }
 

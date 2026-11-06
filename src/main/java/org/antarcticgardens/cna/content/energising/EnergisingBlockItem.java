@@ -1,7 +1,7 @@
 package org.antarcticgardens.cna.content.energising;
 
 import com.mojang.math.Axis;
-import com.simibubi.create.content.processing.AssemblyOperatorBlockItem;
+import com.zurrtum.create.content.processing.AssemblyOperatorBlockItem;
 import com.simibubi.create.foundation.item.render.SimpleCustomRenderer;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.api.distmarker.Dist;

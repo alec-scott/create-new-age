@@ -1,9 +1,9 @@
 package org.antarcticgardens.cna.data;
 
-import com.simibubi.create.content.processing.burner.BlazeBurnerBlock;
-import com.tterrag.registrate.providers.DataGenContext;
-import com.tterrag.registrate.providers.RegistrateBlockstateProvider;
-import com.tterrag.registrate.util.nullness.NonNullBiConsumer;
+import com.zurrtum.create.content.processing.burner.BlazeBurnerBlock;
+import org.antarcticgardens.cna.port.registrate.providers.DataGenContext;
+import org.antarcticgardens.cna.port.registrate.providers.RegistrateBlockstateProvider;
+import org.antarcticgardens.cna.port.registrate.util.nullness.NonNullBiConsumer;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.PipeBlock;
@@ -21,7 +21,7 @@ import org.antarcticgardens.cna.content.heat.stirling.StirlingEngineBlock;
 import org.antarcticgardens.cna.content.nuclear.reactor.rod.ReactorRodBlock;
 import org.joml.Vector3f;
 
-import net.neoforged.neoforge.client.model.generators.*;
+import org.antarcticgardens.cna.port.porting_lib.models.generators.*;
 
 public class CNABlockStateGen {
     public static <P extends EnergiserBlock> NonNullBiConsumer<DataGenContext<Block, P>, RegistrateBlockstateProvider> energiser() {

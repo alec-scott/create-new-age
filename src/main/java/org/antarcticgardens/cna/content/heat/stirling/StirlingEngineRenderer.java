@@ -1,13 +1,15 @@
 package org.antarcticgardens.cna.content.heat.stirling;
 
+import net.minecraft.client.renderer.rendertype.RenderTypes;
+
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.simibubi.create.AllBlocks;
-import com.simibubi.create.content.kinetics.base.KineticBlockEntityRenderer;
-import dev.engine_room.flywheel.api.visualization.VisualizationManager;
-import net.createmod.catnip.math.AngleHelper;
-import net.createmod.catnip.render.CachedBuffers;
-import net.createmod.catnip.render.SuperByteBuffer;
+import com.zurrtum.create.AllBlocks;
+import com.zurrtum.create.client.content.kinetics.base.KineticBlockEntityRenderer;
+import com.zurrtum.create.client.flywheel.api.visualization.VisualizationManager;
+import com.zurrtum.create.catnip.math.AngleHelper;
+import com.zurrtum.create.client.catnip.render.CachedBuffers;
+import com.zurrtum.create.client.catnip.render.SuperByteBuffer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -35,7 +37,7 @@ public class StirlingEngineRenderer extends KineticBlockEntityRenderer<StirlingE
         float speed = be.visualSpeed.getValue(partialTicks) * 3 / 10f;
         float angle = be.angle + speed * partialTicks;
 
-        VertexConsumer vb = buffer.getBuffer(RenderType.solid());
+        VertexConsumer vb = buffer.getBuffer(RenderTypes.solid());
         renderFlywheel(be, ms, light, blockState, angle, vb);
     }
 

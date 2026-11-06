@@ -8,7 +8,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -48,7 +48,7 @@ public class ElectricalConnectorRenderer implements BlockEntityRenderer<Abstract
             return;
         }
 
-        ResourceLocation texture = wireType.getTextureLocation();
+        Identifier texture = wireType.getTextureLocation();
 
         var originConnectorPreCast = level.getBlockEntity(pos);
         var endConnectorPreCast = level.getBlockEntity(endPos);
@@ -138,7 +138,7 @@ public class ElectricalConnectorRenderer implements BlockEntityRenderer<Abstract
             }
         }
 
-        ResourceLocation texture = wireItem.getWireType().getTextureLocation();
+        Identifier texture = wireItem.getWireType().getTextureLocation();
         double distanceSqr = wireEnd.distanceToSqr(wireStart);
         int maxDistance = CNAConfig.getServer().maxWireLength.get();
 
@@ -147,7 +147,7 @@ public class ElectricalConnectorRenderer implements BlockEntityRenderer<Abstract
                 return;
             }
 
-            texture = ResourceLocation.fromNamespaceAndPath(CreateNewAge.MOD_ID, "textures/wire/red.png");
+            texture = Identifier.fromNamespaceAndPath(CreateNewAge.MOD_ID, "textures/wire/red.png");
 
         }
 

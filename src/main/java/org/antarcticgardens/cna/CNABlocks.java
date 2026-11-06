@@ -1,20 +1,20 @@
 package org.antarcticgardens.cna;
 
-import com.simibubi.create.AllBlocks;
+import com.zurrtum.create.AllBlocks;
 import com.simibubi.create.AllTags;
-import com.simibubi.create.api.stress.BlockStressValues;
-import com.simibubi.create.content.decoration.encasing.CasingBlock;
-import com.simibubi.create.content.decoration.encasing.EncasedCTBehaviour;
-import com.simibubi.create.content.decoration.encasing.EncasingRegistry;
-import com.simibubi.create.content.processing.AssemblyOperatorBlockItem;
-import com.simibubi.create.foundation.block.connected.SimpleCTBehaviour;
-import com.simibubi.create.foundation.data.BlockStateGen;
-import com.simibubi.create.foundation.data.CreateRegistrate;
-import com.simibubi.create.foundation.data.ModelGen;
-import com.simibubi.create.foundation.data.SharedProperties;
-import com.tterrag.registrate.builders.BlockBuilder;
-import com.tterrag.registrate.util.entry.BlockEntry;
-import com.tterrag.registrate.util.nullness.NonNullUnaryOperator;
+import com.zurrtum.create.api.stress.BlockStressValues;
+import com.zurrtum.create.content.decoration.encasing.CasingBlock;
+import com.zurrtum.create.client.content.decoration.encasing.EncasedCTBehaviour;
+import com.zurrtum.create.content.decoration.encasing.EncasingRegistry;
+import com.zurrtum.create.content.processing.AssemblyOperatorBlockItem;
+import com.zurrtum.create.client.foundation.block.connected.SimpleCTBehaviour;
+import org.antarcticgardens.cna.port.create.foundation.data.BlockStateGen;
+import org.antarcticgardens.cna.port.create.foundation.data.CreateRegistrate;
+import org.antarcticgardens.cna.port.create.foundation.data.ModelGen;
+import org.antarcticgardens.cna.port.create.foundation.data.SharedProperties;
+import org.antarcticgardens.cna.port.registrate.builders.BlockBuilder;
+import org.antarcticgardens.cna.port.registrate.util.entry.BlockEntry;
+import org.antarcticgardens.cna.port.registrate.util.nullness.NonNullUnaryOperator;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
@@ -97,10 +97,7 @@ public class CNABlocks {
             REGISTRATE.block("basic_energiser", EnergiserBlock::newBasic)
                     .properties(BlockBehaviour.Properties::requiresCorrectToolForDrops)
                     .properties(BlockBehaviour.Properties::noOcclusion)
-                    .blockstate(CNABlockStateGen.energiser())
                     .transform(setImpact(4.0))
-                    .tag(BlockTags.MINEABLE_WITH_AXE)
-                    .tag(BlockTags.MINEABLE_WITH_PICKAXE)
                     .item(EnergisingBlockItem::new)
                     .build()
                     .register();
@@ -109,10 +106,7 @@ public class CNABlocks {
             REGISTRATE.block("advanced_energiser", EnergiserBlock::newAdvanced)
                     .properties(BlockBehaviour.Properties::requiresCorrectToolForDrops)
                     .properties(BlockBehaviour.Properties::noOcclusion)
-                    .blockstate(CNABlockStateGen.energiser())
                     .transform(setImpact(8.0))
-                    .tag(BlockTags.MINEABLE_WITH_AXE)
-                    .tag(BlockTags.MINEABLE_WITH_PICKAXE)
                     .item(EnergisingBlockItem::new)
                     .build()
                     .register();
@@ -121,10 +115,7 @@ public class CNABlocks {
             REGISTRATE.block("reinforced_energiser", EnergiserBlock::newReinforced)
                     .properties(BlockBehaviour.Properties::requiresCorrectToolForDrops)
                     .properties(BlockBehaviour.Properties::noOcclusion)
-                    .blockstate(CNABlockStateGen.energiser())
                     .transform(setImpact(32.0))
-                    .tag(BlockTags.MINEABLE_WITH_AXE)
-                    .tag(BlockTags.MINEABLE_WITH_PICKAXE)
                     .item(EnergisingBlockItem::new)
                     .build()
                     .register();
@@ -133,8 +124,6 @@ public class CNABlocks {
             REGISTRATE.block("electrical_connector", ElectricalConnectorBlock::new)
                     .properties(BlockBehaviour.Properties::noOcclusion)
                     .properties(properties -> properties.strength(0.4f))
-                    .tag(BlockTags.MINEABLE_WITH_PICKAXE)
-                    .blockstate(CNABlockStateGen.electricalConnector())
                     .item()
                     .transform(ModelGen.customItemModel())
                     .register();
@@ -143,8 +132,6 @@ public class CNABlocks {
             REGISTRATE.block("generator_coil", GeneratorCoilBlock::new)
                     .properties(BlockBehaviour.Properties::requiresCorrectToolForDrops)
                     .properties(BlockBehaviour.Properties::noOcclusion)
-                    .tag(BlockTags.MINEABLE_WITH_PICKAXE)
-                    .blockstate((c, p) -> BlockStateGen.axisBlock(c, p, (s) -> p.models().getExistingFile(p.modLoc("block/generator_coil/block"))))
                     .transform(setImpact(24.0f))
                     .item()
                     .transform(ModelGen.customItemModel())
@@ -154,8 +141,6 @@ public class CNABlocks {
     public static final BlockEntry<ImplementedMagnetBlock> MAGNETITE_BLOCK =
             REGISTRATE.block("magnetite_block", ImplementedMagnetBlock.simple(1))
                     .properties(BlockBehaviour.Properties::requiresCorrectToolForDrops)
-                    .tag(CNATags.Block.MAGNET.blockTag)
-                    .tag(BlockTags.MINEABLE_WITH_PICKAXE)
                     .simpleItem()
                     .register();
 
@@ -163,32 +148,24 @@ public class CNABlocks {
             REGISTRATE.block("redstone_magnet", ImplementedMagnetBlock.simple(2))
                     .properties(BlockBehaviour.Properties::requiresCorrectToolForDrops)
                     .transform(b -> b.onRegister(CreateRegistrate.connectedTextures(() -> new SimpleCTBehaviour(CNASpriteShifts.REDSTONE_MAGNET))))
-                    .tag(CNATags.Block.MAGNET.blockTag)
-                    .tag(BlockTags.MINEABLE_WITH_PICKAXE)
                     .simpleItem()
                     .register();
 
     public static final BlockEntry<ImplementedMagnetBlock> LAYERED_MAGNET =
             REGISTRATE.block("layered_magnet", ImplementedMagnetBlock.simple(4))
                     .properties(BlockBehaviour.Properties::requiresCorrectToolForDrops)
-                    .tag(CNATags.Block.MAGNET.blockTag)
-                    .tag(BlockTags.MINEABLE_WITH_PICKAXE)
                     .simpleItem()
                     .register();
 
     public static final BlockEntry<ImplementedMagnetBlock> FLUXUATED_MAGNETITE =
             REGISTRATE.block("fluxuated_magnetite", ImplementedMagnetBlock.simple(8))
                     .properties(BlockBehaviour.Properties::requiresCorrectToolForDrops)
-                    .tag(CNATags.Block.MAGNET.blockTag)
-                    .tag(BlockTags.MINEABLE_WITH_PICKAXE)
                     .simpleItem()
                     .register();
 
     public static final BlockEntry<ImplementedMagnetBlock> NETHERITE_MAGNET =
             REGISTRATE.block("netherite_magnet", ImplementedMagnetBlock.simple(24))
                     .properties(BlockBehaviour.Properties::requiresCorrectToolForDrops)
-                    .tag(CNATags.Block.MAGNET.blockTag)
-                    .tag(BlockTags.MINEABLE_WITH_PICKAXE)
                     .simpleItem()
                     .register();
     
@@ -197,8 +174,6 @@ public class CNABlocks {
             REGISTRATE.block("carbon_brushes", CarbonBrushesBlock::new)
                     .properties(BlockBehaviour.Properties::requiresCorrectToolForDrops)
                     .properties(BlockBehaviour.Properties::noOcclusion)
-                    .tag(BlockTags.MINEABLE_WITH_PICKAXE)
-                    .blockstate((c, p) -> p.directionalBlock(c.get(), p.models().getExistingFile(p.modLoc("block/carbon_brushes/base"))))
                     .item(CarbonBrushesItem::new)
                     .transform(b -> b.model((c, p) -> p.withExistingParent(c.getName(), p.modLoc("block/carbon_brushes/base"))))
                     .build()
@@ -208,8 +183,6 @@ public class CNABlocks {
             REGISTRATE.block("basic_motor", (p) -> new MotorBlock(p, CNABlockEntityTypes.BASIC_MOTOR, new BasicMotorVariant()))
                     .properties(BlockBehaviour.Properties::requiresCorrectToolForDrops)
                     .properties(BlockBehaviour.Properties::noOcclusion)
-                    .tag(BlockTags.MINEABLE_WITH_PICKAXE)
-                    .blockstate(new MotorBlockStateGen("motor")::generate)
                     .properties(properties -> properties.strength(3.0f))
                     .item(MotorBlockItem::new)
                     .transform(b -> b.model((c, p) -> 
@@ -221,8 +194,6 @@ public class CNABlocks {
                     .properties(BlockBehaviour.Properties::requiresCorrectToolForDrops)
                     .properties(BlockBehaviour.Properties::noOcclusion)
                     .properties(properties -> properties.strength(3.5f))
-                    .tag(BlockTags.MINEABLE_WITH_PICKAXE)
-                    .blockstate(new MotorBlockStateGen("motor")::generate)
                     .item(MotorBlockItem::new)
                     .transform(b -> b.model((c, p) ->
                             p.withExistingParent(c.getName(), p.modLoc("block/" + c.getName() + "/horizontal"))).build())
@@ -234,8 +205,6 @@ public class CNABlocks {
                     .properties(BlockBehaviour.Properties::requiresCorrectToolForDrops)
                     .properties(BlockBehaviour.Properties::noOcclusion)
                     .properties(properties -> properties.strength(4.0f))
-                    .tag(BlockTags.MINEABLE_WITH_PICKAXE)
-                    .blockstate(new MotorBlockStateGen("motor")::generate)
                     .item(MotorBlockItem::new)
                     .transform(b -> b.model((c, p) ->
                             p.withExistingParent(c.getName(), p.modLoc("block/" + c.getName() + "/horizontal"))).build())
@@ -246,12 +215,9 @@ public class CNABlocks {
                     .properties(BlockBehaviour.Properties::requiresCorrectToolForDrops)
                     .properties(BlockBehaviour.Properties::noOcclusion)
                     .properties(properties -> properties.strength(4.0f))
-                    .tag(BlockTags.MINEABLE_WITH_PICKAXE)
-                    .blockstate(new MotorBlockStateGen("motor_extension")::generate)
                     .item()
                     .transform(b -> b.model((c, p) ->
                             p.withExistingParent(c.getName(), p.modLoc("block/" + c.getName() + "/horizontal"))).build())
-                    .addLayer(() -> RenderType::cutout)
                     .register();
 
     public static final BlockEntry<MotorExtensionBlock> ADVANCED_MOTOR_EXTENSION =
@@ -259,12 +225,9 @@ public class CNABlocks {
                     .properties(BlockBehaviour.Properties::requiresCorrectToolForDrops)
                     .properties(BlockBehaviour.Properties::noOcclusion)
                     .properties(properties -> properties.strength(4.0f))
-                    .tag(BlockTags.MINEABLE_WITH_PICKAXE)
-                    .blockstate(new MotorBlockStateGen("motor_extension")::generate)
                     .item()
                     .transform(b -> b.model((c, p) ->
                             p.withExistingParent(c.getName(), p.modLoc("block/" + c.getName() + "/horizontal"))).build())
-                    .addLayer(() -> RenderType::cutout)
                     .register();
 
 
@@ -274,10 +237,7 @@ public class CNABlocks {
                     .properties((p) -> p.requiresCorrectToolForDrops().mapColor(MapColor.COLOR_GRAY).sound(SoundType.NETHERITE_BLOCK))
                     .onRegister(CreateRegistrate.connectedTextures(() -> new EncasedCTBehaviour(CNASpriteShifts.HEAT_CASING)))
                     .onRegister(CreateRegistrate.casingConnectivity((block, cc) -> cc.makeCasing(block, CNASpriteShifts.HEAT_CASING)))
-                    .tag(BlockTags.MINEABLE_WITH_PICKAXE)
-                    .tag(AllTags.AllBlockTags.CASING.tag)
                     .item()
-                    .tag(AllTags.AllItemTags.CASING.tag)
                     .build()
                     .register();
 
@@ -286,8 +246,6 @@ public class CNABlocks {
                     .properties(BlockBehaviour.Properties::noOcclusion)
                     .properties(BlockBehaviour.Properties::requiresCorrectToolForDrops)
                     .properties(properties -> properties.strength(1.6f))
-                    .tag(BlockTags.MINEABLE_WITH_PICKAXE)
-                    .blockstate(CNABlockStateGen.heatPipe())
                     .item()
                     .transform(ModelGen.customItemModel())
                     .register();
@@ -298,9 +256,6 @@ public class CNABlocks {
                     .onRegister(CreateRegistrate.connectedTextures(() -> new EncasedCTBehaviour(CNASpriteShifts.HEAT_CASING)))
                     .onRegister(CreateRegistrate.casingConnectivity((block, cc) -> cc.make(block, CNASpriteShifts.HEAT_CASING,
                             (s, f) -> !s.getValue(EncasedHeatPipeBlock.getDirectionProperty(f)))))
-                    .loot((p, b) -> p.dropOther(b, HEAT_PIPE.get()))
-                    .tag(BlockTags.MINEABLE_WITH_PICKAXE)
-                    .blockstate(CNABlockStateGen.encasedHeatPipe())
                     .transform(EncasingRegistry.addVariantTo(HEAT_PIPE))
                     .register();
 
@@ -309,8 +264,6 @@ public class CNABlocks {
                     .properties(BlockBehaviour.Properties::noOcclusion)
                     .properties(BlockBehaviour.Properties::requiresCorrectToolForDrops)
                     .properties(properties -> properties.strength(1.6f))
-                    .tag(BlockTags.MINEABLE_WITH_PICKAXE)
-                    .blockstate(CNABlockStateGen.heatPump())
                     .item()
                     .transform(ModelGen.customItemModel())
                     .register();
@@ -320,8 +273,6 @@ public class CNABlocks {
                     .properties(BlockBehaviour.Properties::requiresCorrectToolForDrops)
                     .properties(BlockBehaviour.Properties::noOcclusion)
                     .properties(properties -> properties.strength(2.0f))
-                    .tag(BlockTags.MINEABLE_WITH_PICKAXE)
-                    .blockstate(CNABlockStateGen.heater())
                     .item()
                     .transform(b -> b.model((c, p) -> p.withExistingParent(c.getName(), p.modLoc("block/" + c.getName()))
                             .texture("top", p.modLoc("block/heater_top_0"))).build())
@@ -333,8 +284,6 @@ public class CNABlocks {
                     .properties(BlockBehaviour.Properties::requiresCorrectToolForDrops)
                     .properties(BlockBehaviour.Properties::noOcclusion)
                     .properties(properties -> properties.strength(2.0f))
-                    .tag(BlockTags.MINEABLE_WITH_PICKAXE)
-                    .blockstate(CNABlockStateGen.stirlingEngine())
                     .transform(setCapacity(32.0))
                     .item(StirlingEngineItem::new)
                     .build()
@@ -344,7 +293,6 @@ public class CNABlocks {
             REGISTRATE.block("solid_corium", SolidCoriumBlock::new)
                     .properties(BlockBehaviour.Properties::requiresCorrectToolForDrops)
                     .properties(properties -> properties.strength(50.0f))
-                    .tag(BlockTags.MINEABLE_WITH_PICKAXE)
                     .simpleItem()
                     .register();
 
@@ -352,7 +300,6 @@ public class CNABlocks {
             REGISTRATE.block("corium", CoriumBlock::new)
                     .properties(BlockBehaviour.Properties::requiresCorrectToolForDrops)
                     .properties(properties -> properties.strength(70.0f))
-                    .tag(BlockTags.MINEABLE_WITH_PICKAXE)
                     .simpleItem()
                     .register();
 
@@ -361,11 +308,7 @@ public class CNABlocks {
                     .properties(BlockBehaviour.Properties::requiresCorrectToolForDrops)
                     .onRegister(CreateRegistrate.connectedTextures(() -> new EncasedCTBehaviour(CNASpriteShifts.REACTOR_CASING)))
                     .onRegister(CreateRegistrate.casingConnectivity((block, cc) -> cc.makeCasing(block, CNASpriteShifts.REACTOR_CASING)))
-                    .tag(CNATags.Block.STOPS_RADIATION.blockTag)
-                    .tag(AllTags.AllBlockTags.CASING.tag)
-                    .tag(BlockTags.MINEABLE_WITH_PICKAXE)
                     .item()
-                    .tag(AllTags.AllItemTags.CASING.tag)
                     .build()
                     .register();
 
@@ -375,10 +318,6 @@ public class CNABlocks {
                     .onRegister(CreateRegistrate.connectedTextures(() -> new EncasedCTBehaviour(CNASpriteShifts.REACTOR_CASING)))
                     .onRegister(CreateRegistrate.casingConnectivity((block, cc) -> cc.make(block, CNASpriteShifts.REACTOR_CASING,
                             (s, f) -> !s.getValue(EncasedHeatPipeBlock.getDirectionProperty(f)))))
-                    .loot((p, b) -> p.dropOther(b, HEAT_PIPE.get()))
-                    .tag(CNATags.Block.STOPS_RADIATION.blockTag)
-                    .tag(BlockTags.MINEABLE_WITH_PICKAXE)
-                    .blockstate(CNABlockStateGen.encasedHeatPipe())
                     .transform(EncasingRegistry.addVariantTo(HEAT_PIPE))
                     .register();
 
@@ -386,9 +325,6 @@ public class CNABlocks {
             REGISTRATE.block("reactor_rod", ReactorRodBlock::new)
                     .properties(BlockBehaviour.Properties::requiresCorrectToolForDrops)
                     .properties(BlockBehaviour.Properties::noOcclusion)
-                    .blockstate(CNABlockStateGen.reactorRod())
-                    .tag(CNATags.Block.STOPS_RADIATION.blockTag)
-                    .tag(BlockTags.MINEABLE_WITH_PICKAXE)
                     .simpleItem()
                     .register();
 
@@ -399,9 +335,6 @@ public class CNABlocks {
                     .properties(BlockBehaviour.Properties::requiresCorrectToolForDrops)
                     .properties(p -> p.isViewBlocking((a,b,c) -> false))
                     .transform(b -> b.onRegister(CreateRegistrate.connectedTextures(() -> new SimpleCTBehaviour(CNASpriteShifts.REACTOR_GLASS))))
-                    .tag(CNATags.Block.STOPS_RADIATION.blockTag)
-                    .tag(BlockTags.MINEABLE_WITH_PICKAXE)
-                    .addLayer(() -> RenderType::cutout)
                     .simpleItem()
                     .register();
 
@@ -409,9 +342,6 @@ public class CNABlocks {
             REGISTRATE.block("reactor_fuel_acceptor", ReactorFuelAcceptorBlock::new)
                     .properties(BlockBehaviour.Properties::requiresCorrectToolForDrops)
                     .properties(BlockBehaviour.Properties::noOcclusion)
-                    .blockstate((c, p) -> p.directionalBlock(c.get(), p.models().getExistingFile(p.modLoc(c.getName()))))
-                    .tag(CNATags.Block.STOPS_RADIATION.blockTag)
-                    .tag(BlockTags.MINEABLE_WITH_PICKAXE)
                     .simpleItem()
                     .register();
 
@@ -420,9 +350,6 @@ public class CNABlocks {
             REGISTRATE.block("reactor_heat_vent", ReactorHeatVentBlock::new)
                     .properties(BlockBehaviour.Properties::requiresCorrectToolForDrops)
                     .properties(BlockBehaviour.Properties::noOcclusion)
-                    .blockstate((c, p) -> p.directionalBlock(c.get(), p.models().getExistingFile(p.modLoc(c.getName()))))
-                    .tag(CNATags.Block.STOPS_RADIATION.blockTag)
-                    .tag(BlockTags.MINEABLE_WITH_PICKAXE)
                     .simpleItem()
                     .register();
 
@@ -431,9 +358,6 @@ public class CNABlocks {
             REGISTRATE.block("basic_solar_heating_plate", SolarHeatingPlateBlock::createBasic)
                     .properties(BlockBehaviour.Properties::requiresCorrectToolForDrops)
                     .properties(BlockBehaviour.Properties::noOcclusion)
-                    .blockstate((c, p) -> p.simpleBlock(c.get(), p.models().getExistingFile(p.modLoc(c.getName()))))
-                    .tag(BlockTags.MINEABLE_WITH_PICKAXE)
-                    .addLayer(() -> RenderType::cutout)
                     .simpleItem()
                     .register();
 
@@ -441,9 +365,6 @@ public class CNABlocks {
             REGISTRATE.block("advanced_solar_heating_plate", SolarHeatingPlateBlock::createAdvanced)
                     .properties(BlockBehaviour.Properties::requiresCorrectToolForDrops)
                     .properties(BlockBehaviour.Properties::noOcclusion)
-                    .blockstate((c, p) -> p.simpleBlock(c.get(), p.models().getExistingFile(p.modLoc(c.getName()))))
-                    .tag(BlockTags.MINEABLE_WITH_PICKAXE)
-                    .addLayer(() -> RenderType::cutout)
                     .simpleItem()
                     .register();
 
@@ -451,16 +372,6 @@ public class CNABlocks {
     public static final BlockEntry<Block> THORIUM_ORE =
             REGISTRATE.block("thorium_ore", Block::new)
                     .properties((p) -> p.strength(3.5f).requiresCorrectToolForDrops())
-                    .tag(BlockTags.MINEABLE_WITH_PICKAXE)
-                    .tag(BlockTags.NEEDS_IRON_TOOL)
-                    .loot((lt, b) ->  {
-                        HolderLookup.RegistryLookup<Enchantment> enchantmentRegistryLookup = lt.getRegistries().lookupOrThrow(Registries.ENCHANTMENT);
-
-                        lt.add(b,
-                                lt.createSilkTouchDispatchTable(b,
-                                        lt.applyExplosionDecay(b, LootItem.lootTableItem(CNAItems.THORIUM.get())
-                                                .apply(ApplyBonusCount.addOreBonusCount(enchantmentRegistryLookup.getOrThrow(Enchantments.FORTUNE))))));
-                    })
                     .item(AssemblyOperatorBlockItem::new)
                     .build()
                     .register();
@@ -471,11 +382,6 @@ public class CNABlocks {
                     .properties(BlockBehaviour.Properties::requiresCorrectToolForDrops)
                     .properties(BlockBehaviour.Properties::noOcclusion)
                     .properties(p -> p.sound(SoundType.COPPER))
-                    .blockstate((c, p) ->
-                            p.axisBlock(c.get(), p.models().getExistingFile(p.modLoc(c.getName())), p.models().getExistingFile(p.modLoc(c.getName()))))
-                    .tag(BlockTags.MINEABLE_WITH_PICKAXE)
-                    .tag(BlockTags.MINEABLE_WITH_AXE)
-                    .tag(BlockTags.NEEDS_STONE_TOOL)
                     .simpleItem()
                     .register();
 
@@ -485,11 +391,6 @@ public class CNABlocks {
                     .properties(BlockBehaviour.Properties::requiresCorrectToolForDrops)
                     .properties(BlockBehaviour.Properties::noOcclusion)
                     .properties(p -> p.sound(SoundType.COPPER))
-                    .blockstate((c, p) ->
-                            p.axisBlock(c.get(), p.models().getExistingFile(p.modLoc(c.getName())), p.models().getExistingFile(p.modLoc(c.getName()))))
-                    .tag(BlockTags.MINEABLE_WITH_PICKAXE)
-                    .tag(BlockTags.MINEABLE_WITH_AXE)
-                    .tag(BlockTags.NEEDS_STONE_TOOL)
                     .simpleItem()
                     .register();
 
@@ -499,11 +400,6 @@ public class CNABlocks {
                     .properties(BlockBehaviour.Properties::requiresCorrectToolForDrops)
                     .properties(BlockBehaviour.Properties::noOcclusion)
                     .properties(p -> p.sound(SoundType.COPPER))
-                    .blockstate((c, p) ->
-                            p.axisBlock(c.get(), p.models().getExistingFile(p.modLoc(c.getName())), p.models().getExistingFile(p.modLoc(c.getName()))))
-                    .tag(BlockTags.MINEABLE_WITH_PICKAXE)
-                    .tag(BlockTags.MINEABLE_WITH_AXE)
-                    .tag(BlockTags.NEEDS_IRON_TOOL)
                     .simpleItem()
                     .register();
 
@@ -513,11 +409,6 @@ public class CNABlocks {
                     .properties(BlockBehaviour.Properties::requiresCorrectToolForDrops)
                     .properties(BlockBehaviour.Properties::noOcclusion)
                     .properties(p -> p.sound(SoundType.COPPER))
-                    .blockstate((c, p) ->
-                            p.axisBlock(c.get(), p.models().getExistingFile(p.modLoc(c.getName())), p.models().getExistingFile(p.modLoc(c.getName()))))
-                    .tag(BlockTags.MINEABLE_WITH_PICKAXE)
-                    .tag(BlockTags.MINEABLE_WITH_AXE)
-                    .tag(BlockTags.NEEDS_IRON_TOOL)
                     .simpleItem()
                     .register();
 
@@ -528,8 +419,6 @@ public class CNABlocks {
                     .properties(BlockBehaviour.Properties::requiresCorrectToolForDrops)
                     .properties(BlockBehaviour.Properties::noOcclusion)
                     .properties(p -> p.sound(SoundType.LANTERN))
-                    .tag(BlockTags.MINEABLE_WITH_PICKAXE)
-                    .blockstate(CNABlockStateGen.streetLight())
                     .item()
                     .transform(ModelGen.customItemModel())
                     .register();
@@ -540,8 +429,6 @@ public class CNABlocks {
                     .properties((p) -> p.mapColor(MapColor.COLOR_GRAY).sound(SoundType.NETHERITE_BLOCK))
                     .properties(BlockBehaviour.Properties::requiresCorrectToolForDrops)
                     .properties(BlockBehaviour.Properties::noOcclusion)
-                    .tag(BlockTags.MINEABLE_WITH_PICKAXE)
-                    .blockstate(CNABlockStateGen.lamppost())
                     .item()
                     .transform(ModelGen.customItemModel())
                     .register();

@@ -1,136 +1,71 @@
 package org.antarcticgardens.cna.content.energising.recipe;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.DynamicOps;
 import com.mojang.serialization.MapCodec;
-import com.simibubi.create.content.processing.recipe.ProcessingRecipe;
-import com.simibubi.create.content.processing.recipe.ProcessingRecipeBuilder;
-import com.simibubi.create.content.processing.sequenced.IAssemblyRecipe;
-import com.simibubi.create.foundation.recipe.IRecipeTypeInfo;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.zurrtum.create.content.processing.recipe.ProcessingOutput;
+import com.zurrtum.create.foundation.recipe.CreateSingleStackRollableRecipe;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.level.ItemLike;
-import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.items.wrapper.RecipeWrapper;
-import org.antarcticgardens.cna.CNABlocks;
+import net.minecraft.world.item.crafting.RecipeType;
 import org.antarcticgardens.cna.CNARecipeTypes;
-import org.antarcticgardens.cna.CreateNewAge;
 
 import java.util.List;
-import java.util.Set;
-import java.util.function.Supplier;
 
-import com.simibubi.create.compat.jei.category.sequencedAssembly.SequencedAssemblySubCategory;
+/**
+ * PORT-NOTE(26.1): Create Fly's single-ingredient record style (as CC&A's charging recipe):
+ * {@code {ingredient, results (1-4), energy_needed}}. Upstream's ProcessingRecipe params (processing time, heat,
+ * fluids) are gone; only the ingredient, results and energy were ever used. Sequenced assembly steps are plain
+ * recipes in Create Fly; the step name comes from {@link #getDescriptionForAssembly}, registered with
+ * {@code AllAssemblyRecipeNames} in {@link CNARecipeTypes#register()}. The required-machine / JEI subcategory hooks
+ * of IAssemblyRecipe moved to the JEI plugin.
+ */
+public record EnergisingRecipe(List<ProcessingOutput> results, Ingredient ingredient, int energyNeeded)
+        implements CreateSingleStackRollableRecipe {
+    public static final MapCodec<EnergisingRecipe> MAP_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+            ProcessingOutput.CODEC.listOf(1, 4).fieldOf("results").forGetter(EnergisingRecipe::results),
+            Ingredient.CODEC.fieldOf("ingredient").forGetter(EnergisingRecipe::ingredient),
+            Codec.INT.optionalFieldOf("energy_needed", 0).forGetter(EnergisingRecipe::energyNeeded)
+    ).apply(instance, EnergisingRecipe::new));
+    public static final StreamCodec<RegistryFriendlyByteBuf, EnergisingRecipe> STREAM_CODEC = StreamCodec.composite(
+            ProcessingOutput.STREAM_CODEC.apply(ByteBufCodecs.list()), EnergisingRecipe::results,
+            Ingredient.CONTENTS_STREAM_CODEC, EnergisingRecipe::ingredient,
+            ByteBufCodecs.VAR_INT, EnergisingRecipe::energyNeeded,
+            EnergisingRecipe::new
+    );
+    public static final RecipeSerializer<EnergisingRecipe> SERIALIZER = new RecipeSerializer<>(MAP_CODEC, STREAM_CODEC);
 
-public class EnergisingRecipe extends ProcessingRecipe<RecipeWrapper, EnergisingRecipeParams> implements IAssemblyRecipe {
-    private int energyNeeded;
-
-    public EnergisingRecipe(EnergisingRecipeParams params) {
-        super(CNARecipeTypes.ENERGISING, params);
-        energyNeeded = params.energyNeeded;
-    }
-
-    public EnergisingRecipe(IRecipeTypeInfo typeInfo, EnergisingRecipeParams params) {
-        super(typeInfo, params);
-        energyNeeded = params.energyNeeded;
-    }
-
-    @Override
-    public boolean matches(RecipeWrapper input, Level level) {
-        if (input.isEmpty())
-            return false;
-        return ingredients.get(0)
-                .test(input.getItem(0));
-    }
-
-    public static class Builder<R extends EnergisingRecipe> extends ProcessingRecipeBuilder<EnergisingRecipeParams, R, EnergisingRecipe.Builder<R>> {
-        public Builder(EnergisingRecipe.Factory<EnergisingRecipeParams, R> factory, ResourceLocation recipeId) {
-            super(factory, recipeId);
-        }
-
-        @Override
-        protected EnergisingRecipeParams createParams() {
-            return new EnergisingRecipeParams();
-        }
-
-        @Override
-        public EnergisingRecipe.Builder<R> self() {
-            return this;
-        }
-
-        public Builder<R> energyNeeded(int energyNeeded) {
-            params.energyNeeded = energyNeeded;
-            return this;
-        }
-    }
-
-    public static class Serializer<R extends EnergisingRecipe> implements RecipeSerializer<R> {
-        private final MapCodec<R> codec;
-        private final StreamCodec<RegistryFriendlyByteBuf, R> streamCodec;
-        private final ProcessingRecipe.Factory<EnergisingRecipeParams, R> factory;
-
-        public Serializer(ProcessingRecipe.Factory<EnergisingRecipeParams, R> factory) {
-            this.codec = ProcessingRecipe.codec(factory, EnergisingRecipeParams.CODEC);
-            this.streamCodec = ProcessingRecipe.streamCodec(factory, EnergisingRecipeParams.STREAM_CODEC);
-            this.factory = factory;
-        }
-
-        @Override
-        public MapCodec<R> codec() {
-            return codec;
-        }
-
-        @Override
-        public StreamCodec<RegistryFriendlyByteBuf, R> streamCodec() {
-            return streamCodec;
-        }
-
-        public ProcessingRecipe.Factory<EnergisingRecipeParams, R> factory() {
-            return factory;
-        }
-
-    }
-    
     public int getEnergyNeeded() {
         return energyNeeded;
     }
 
-    @Override
-    protected int getMaxInputCount() {
-        return 1;
+    public boolean test(ItemStack stack) {
+        return ingredient.test(stack);
     }
 
-    @Override
-    protected int getMaxOutputCount() {
-        return 4;
+    public ItemStack getResultItem() {
+        return results.getFirst().create();
     }
 
-    @Override
-    public Component getDescriptionForAssembly() {
+    public static Component getDescriptionForAssembly(DynamicOps<JsonElement> ops, JsonObject json) {
         return Component.translatable("recipe.assembly.energising");
     }
 
     @Override
-    public void addRequiredMachines(Set<ItemLike> list) {
-        list.add(CNABlocks.BASIC_ENERGISER.get());
+    public RecipeSerializer<EnergisingRecipe> getSerializer() {
+        return CNARecipeTypes.ENERGISING_SERIALIZER;
     }
 
     @Override
-    public void addAssemblyIngredients(List<Ingredient> list) {}
-    
-    @SuppressWarnings("unchecked")
-    @Override
-    public Supplier<Supplier<SequencedAssemblySubCategory>> getJEISubCategory() {
-        return (Supplier<Supplier<SequencedAssemblySubCategory>>) CreateNewAge.getInstance().getPlatform().getEnergisingRecipeSubCategory();
+    public RecipeType<EnergisingRecipe> getType() {
+        return CNARecipeTypes.ENERGISING;
     }
-
-    public boolean test(ItemStack stack) {
-        return ingredients.get(0)
-                .test(stack);
-    }
-    
-    public static void load() {  }
 }

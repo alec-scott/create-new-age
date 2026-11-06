@@ -1,9 +1,9 @@
 package org.antarcticgardens.cna.content.motor.extension;
 
-import com.simibubi.create.content.equipment.wrench.IWrenchable;
-import com.simibubi.create.foundation.block.IBE;
-import com.simibubi.create.foundation.utility.CreateLang;
-import com.tterrag.registrate.util.entry.BlockEntityEntry;
+import com.zurrtum.create.content.equipment.wrench.IWrenchable;
+import com.zurrtum.create.foundation.block.IBE;
+import com.zurrtum.create.client.foundation.utility.CreateLang;
+import org.antarcticgardens.cna.port.registrate.util.entry.BlockEntityEntry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "id": "create_new_age",
+  "version": "${version}",
+  "name": "Create: New Age",
+  "description": "An addon for the Create mod that adds integration with electricity.\n\nUnofficial Fabric 26.1.2 port on Create Fly.",
+  "authors": ["Antarctic Gardens"],
+  "contact": {
+    "homepage": "https://antarcticgardens.org/",
+    "sources": "https://gitlab.com/antarcticgardens/create-new-age",
+    "issues": "https://gitlab.com/antarcticgardens/create-new-age/-/issues"
+  },
+  "license": "BSD-3-Clause",
+  "icon": "icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": ["org.antarcticgardens.cna.CreateNewAge"],
+    "client": ["org.antarcticgardens.cna.CreateNewAgeClient"],
+    "jei_mod_plugin": ["org.antarcticgardens.cna.compat.jei.CNAJeiPlugin"]
+  },
+  "accessWidener": "create_new_age.accesswidener",
+  "mixins": [
+    "create_new_age.mixins.json",
+    "create_new_age-esl.mixins.json"
+  ],
+  "depends": {
+    "minecraft": "${minecraft_version}",
+    "fabricloader": ">=${fabric_loader_version}",
+    "fabric-api": ">=${fabric_api_version}",
+    "forgeconfigapiport": ">=${forgeconfigapiport_version}",
+    "create": "${create_fly_version_range}",
+    "team_reborn_energy": ">=${tr_energy_version}",
+    "java": ">=25"
+  },
+  "suggests": { "jei": ">=29.47.0", "computercraft": ">=1.120.0" }
+}

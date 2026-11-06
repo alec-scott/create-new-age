@@ -2,9 +2,9 @@ package org.antarcticgardens.cna.compat;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import com.simibubi.create.AllBlocks;
-import net.createmod.catnip.animation.AnimationTickHolder;
-import net.createmod.catnip.gui.element.GuiGameElement;
+import com.zurrtum.create.AllBlocks;
+import com.zurrtum.create.client.catnip.animation.AnimationTickHolder;
+import com.zurrtum.create.client.catnip.gui.element.GuiGameElement;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;

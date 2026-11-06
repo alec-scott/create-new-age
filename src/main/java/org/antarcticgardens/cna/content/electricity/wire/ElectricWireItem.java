@@ -1,6 +1,6 @@
 package org.antarcticgardens.cna.content.electricity.wire;
 
-import com.simibubi.create.foundation.utility.CreateLang;
+import com.zurrtum.create.client.foundation.utility.CreateLang;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;

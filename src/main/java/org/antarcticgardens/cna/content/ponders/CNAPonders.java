@@ -1,10 +1,10 @@
 package org.antarcticgardens.cna.content.ponders;
 
-import com.tterrag.registrate.util.entry.ItemProviderEntry;
-import com.tterrag.registrate.util.entry.RegistryEntry;
-import net.createmod.ponder.api.level.PonderLevel;
+import org.antarcticgardens.cna.port.registrate.util.entry.ItemProviderEntry;
+import org.antarcticgardens.cna.port.registrate.util.entry.RegistryEntry;
+import com.zurrtum.create.client.ponder.api.level.PonderLevel;
 import net.createmod.ponder.api.registration.*;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.antarcticgardens.cna.CNABlocks;
 import org.antarcticgardens.cna.CNAItems;
 import org.antarcticgardens.cna.CreateNewAge;
@@ -16,12 +16,12 @@ public class CNAPonders implements PonderPlugin {
     }
 
     @Override
-    public void registerScenes(PonderSceneRegistrationHelper<ResourceLocation> helper) {
+    public void registerScenes(PonderSceneRegistrationHelper<Identifier> helper) {
         register(helper);
     }
 
     @Override
-    public void registerTags(PonderTagRegistrationHelper<ResourceLocation> helper) {
+    public void registerTags(PonderTagRegistrationHelper<Identifier> helper) {
         register(helper);
     }
 
@@ -40,7 +40,7 @@ public class CNAPonders implements PonderPlugin {
         PonderPlugin.super.indexExclusions(helper);
     }
 
-    public static void register(PonderSceneRegistrationHelper<ResourceLocation> helper) {
+    public static void register(PonderSceneRegistrationHelper<Identifier> helper) {
         PonderSceneRegistrationHelper<ItemProviderEntry<?, ?>> HELPER = helper.withKeyFunction(RegistryEntry::getId);
 
         HELPER.addStoryBoard(CNABlocks.BASIC_ENERGISER, "energiser", EnergiserPonder::ponder);
@@ -84,15 +84,15 @@ public class CNAPonders implements PonderPlugin {
 
     }
 
-    static ResourceLocation ELECTRICAL = ResourceLocation.fromNamespaceAndPath(CreateNewAge.MOD_ID, "electrical");
-    static ResourceLocation WIRING = ResourceLocation.fromNamespaceAndPath(CreateNewAge.MOD_ID, "wiring");
-    static ResourceLocation MAGNETS = ResourceLocation.fromNamespaceAndPath(CreateNewAge.MOD_ID, "magnets");
-    static ResourceLocation ELECTRICITY_GENERATION = ResourceLocation.fromNamespaceAndPath(CreateNewAge.MOD_ID, "electricity_generation");
-    static ResourceLocation HEATING = ResourceLocation.fromNamespaceAndPath(CreateNewAge.MOD_ID, "heating");
-    static ResourceLocation REACTOR = ResourceLocation.fromNamespaceAndPath(CreateNewAge.MOD_ID, "reactor");
-    static ResourceLocation MOTOR_EXTENSION = ResourceLocation.fromNamespaceAndPath(CreateNewAge.MOD_ID, "motor_extension");
+    static Identifier ELECTRICAL = Identifier.fromNamespaceAndPath(CreateNewAge.MOD_ID, "electrical");
+    static Identifier WIRING = Identifier.fromNamespaceAndPath(CreateNewAge.MOD_ID, "wiring");
+    static Identifier MAGNETS = Identifier.fromNamespaceAndPath(CreateNewAge.MOD_ID, "magnets");
+    static Identifier ELECTRICITY_GENERATION = Identifier.fromNamespaceAndPath(CreateNewAge.MOD_ID, "electricity_generation");
+    static Identifier HEATING = Identifier.fromNamespaceAndPath(CreateNewAge.MOD_ID, "heating");
+    static Identifier REACTOR = Identifier.fromNamespaceAndPath(CreateNewAge.MOD_ID, "reactor");
+    static Identifier MOTOR_EXTENSION = Identifier.fromNamespaceAndPath(CreateNewAge.MOD_ID, "motor_extension");
 
-    public static void register(PonderTagRegistrationHelper<ResourceLocation> helper) {
+    public static void register(PonderTagRegistrationHelper<Identifier> helper) {
         PonderTagRegistrationHelper<RegistryEntry<?, ?>> HELPER = helper.withKeyFunction(RegistryEntry::getId);
 
         HELPER.registerTag(ELECTRICAL)

@@ -1,5 +1,6 @@
 package org.antarcticgardens.cna.config;
 
+import fuzs.forgeconfigapiport.fabric.api.v5.ConfigRegistry;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.common.ModConfigSpec;
 import org.antarcticgardens.cna.CreateNewAge;
@@ -13,11 +14,11 @@ public class CNAConfig {
     private CNAConfig() {
         var client = new ModConfigSpec.Builder().configure(ClientConfig::new);
         this.client = client.getLeft();
-        CreateNewAge.getInstance().getPlatform().getRegistrar().registerConfig(ModConfig.Type.CLIENT, client.getRight());
+        ConfigRegistry.INSTANCE.register(CreateNewAge.MOD_ID, ModConfig.Type.CLIENT, client.getRight());
 
         var common = new ModConfigSpec.Builder().configure(ServerConfig::new);
         this.server = common.getLeft();
-        CreateNewAge.getInstance().getPlatform().getRegistrar().registerConfig(ModConfig.Type.SERVER, common.getRight());
+        ConfigRegistry.INSTANCE.register(CreateNewAge.MOD_ID, ModConfig.Type.SERVER, common.getRight());
     }
 
     public static ClientConfig getClient() {

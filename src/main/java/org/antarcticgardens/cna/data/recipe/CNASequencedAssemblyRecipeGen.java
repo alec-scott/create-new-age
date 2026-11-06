@@ -1,8 +1,8 @@
 package org.antarcticgardens.cna.data.recipe;
 
-import com.simibubi.create.content.kinetics.deployer.DeployerApplicationRecipe;
-import com.simibubi.create.content.kinetics.press.PressingRecipe;
-import com.simibubi.create.content.kinetics.saw.CuttingRecipe;
+import com.zurrtum.create.content.kinetics.deployer.DeployerApplicationRecipe;
+import com.zurrtum.create.content.kinetics.press.PressingRecipe;
+import com.zurrtum.create.content.kinetics.saw.CuttingRecipe;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.item.ItemStack;

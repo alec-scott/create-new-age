@@ -1,11 +1,11 @@
 package org.antarcticgardens.cna.content.electricity.light;
 
-import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
-import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
-import com.simibubi.create.foundation.blockEntity.behaviour.ValueBoxTransform;
-import com.simibubi.create.foundation.blockEntity.behaviour.scrollValue.ScrollValueBehaviour;
-import com.simibubi.create.foundation.utility.CreateLang;
-import net.createmod.catnip.math.VecHelper;
+import com.zurrtum.create.client.api.goggles.IHaveGoggleInformation;
+import com.zurrtum.create.api.behaviour.BlockEntityBehaviour;
+import com.zurrtum.create.client.foundation.blockEntity.behaviour.ValueBoxTransform;
+import com.zurrtum.create.client.foundation.blockEntity.behaviour.scrollValue.ScrollValueBehaviour;
+import com.zurrtum.create.client.foundation.utility.CreateLang;
+import com.zurrtum.create.catnip.math.VecHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -22,7 +22,7 @@ import org.antarcticgardens.cna.content.electricity.network.ElectricalNetwork;
 import org.antarcticgardens.cna.content.electricity.network.SimpleNetworkEnergyStorage;
 import org.antarcticgardens.cna.util.RunnableUtil;
 import org.antarcticgardens.cna.util.StringFormatUtil;
-import org.antarcticgardens.esl.energy.EnergyStorage;
+import org.antarcticgardens.cna.port.esl.energy.EnergyStorage;
 
 import java.util.List;
 

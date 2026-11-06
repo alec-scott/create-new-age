@@ -1,8 +1,8 @@
 package org.antarcticgardens.cna.content.heat.stirling;
 
-import com.simibubi.create.content.kinetics.base.GeneratingKineticBlockEntity;
-import com.simibubi.create.foundation.utility.CreateLang;
-import net.createmod.catnip.animation.LerpedFloat;
+import com.zurrtum.create.content.kinetics.base.GeneratingKineticBlockEntity;
+import com.zurrtum.create.client.foundation.utility.CreateLang;
+import com.zurrtum.create.catnip.animation.LerpedFloat;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

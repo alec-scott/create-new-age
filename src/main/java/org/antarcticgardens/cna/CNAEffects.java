@@ -1,6 +1,6 @@
 package org.antarcticgardens.cna;
 
-import com.tterrag.registrate.util.entry.RegistryEntry;
+import org.antarcticgardens.cna.port.registrate.util.entry.RegistryEntry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;

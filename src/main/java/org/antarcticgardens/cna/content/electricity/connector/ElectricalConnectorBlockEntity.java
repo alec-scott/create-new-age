@@ -1,7 +1,7 @@
 package org.antarcticgardens.cna.content.electricity.connector;
 
-import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
-import com.simibubi.create.foundation.utility.CreateLang;
+import com.zurrtum.create.client.api.goggles.IHaveGoggleInformation;
+import com.zurrtum.create.client.foundation.utility.CreateLang;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -12,7 +12,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.antarcticgardens.cna.CNABlockEntityTypes;
 import org.antarcticgardens.cna.content.electricity.network.ElectricalNetwork;
 import org.antarcticgardens.cna.content.electricity.network.NetworkEnergyStorage;
-import org.antarcticgardens.esl.energy.EnergyStorage;
+import org.antarcticgardens.cna.port.esl.energy.EnergyStorage;
 
 import java.util.*;
 

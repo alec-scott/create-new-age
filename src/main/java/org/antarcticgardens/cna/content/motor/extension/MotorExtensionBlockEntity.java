@@ -1,15 +1,15 @@
 package org.antarcticgardens.cna.content.motor.extension;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.simibubi.create.content.kinetics.motor.CreativeMotorBlock;
-import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
-import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
-import com.simibubi.create.foundation.blockEntity.behaviour.ValueBoxTransform;
-import com.simibubi.create.foundation.utility.CreateLang;
-import com.tterrag.registrate.builders.BlockEntityBuilder;
-import dev.engine_room.flywheel.lib.transform.TransformStack;
-import net.createmod.catnip.math.AngleHelper;
-import net.createmod.catnip.math.VecHelper;
+import com.zurrtum.create.content.kinetics.motor.CreativeMotorBlock;
+import com.zurrtum.create.foundation.blockEntity.SmartBlockEntity;
+import com.zurrtum.create.api.behaviour.BlockEntityBehaviour;
+import com.zurrtum.create.client.foundation.blockEntity.behaviour.ValueBoxTransform;
+import com.zurrtum.create.client.foundation.utility.CreateLang;
+import org.antarcticgardens.cna.port.registrate.builders.BlockEntityBuilder;
+import com.zurrtum.create.client.flywheel.lib.transform.TransformStack;
+import com.zurrtum.create.catnip.math.AngleHelper;
+import com.zurrtum.create.catnip.math.VecHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;

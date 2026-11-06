@@ -1,10 +1,10 @@
 package org.antarcticgardens.cna;
 
-import com.simibubi.create.foundation.block.connected.AllCTTypes;
-import com.simibubi.create.foundation.block.connected.CTSpriteShiftEntry;
-import com.simibubi.create.foundation.block.connected.CTSpriteShifter;
-import com.simibubi.create.foundation.block.connected.CTType;
-import net.minecraft.resources.ResourceLocation;
+import com.zurrtum.create.client.foundation.block.connected.AllCTTypes;
+import com.zurrtum.create.client.foundation.block.connected.CTSpriteShiftEntry;
+import com.zurrtum.create.client.foundation.block.connected.CTSpriteShifter;
+import com.zurrtum.create.client.foundation.block.connected.CTType;
+import net.minecraft.resources.Identifier;
 
 public class CNASpriteShifts {
     public static CTSpriteShiftEntry HEAT_CASING = omni("heat_casing");
@@ -22,7 +22,7 @@ public class CNASpriteShifts {
     }
 
     private static CTSpriteShiftEntry getCT(CTType type, String name) {
-        return CTSpriteShifter.getCT(type, ResourceLocation.fromNamespaceAndPath(CreateNewAge.MOD_ID, "block/" + name),
-                ResourceLocation.fromNamespaceAndPath(CreateNewAge.MOD_ID, "block/" + name + "_connected"));
+        return CTSpriteShifter.getCT(type, Identifier.fromNamespaceAndPath(CreateNewAge.MOD_ID, "block/" + name),
+                Identifier.fromNamespaceAndPath(CreateNewAge.MOD_ID, "block/" + name + "_connected"));
     }
 }

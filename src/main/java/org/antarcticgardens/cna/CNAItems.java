@@ -1,11 +1,11 @@
 package org.antarcticgardens.cna;
 
-import com.simibubi.create.content.processing.sequenced.SequencedAssemblyItem;
-import com.simibubi.create.foundation.data.AssetLookup;
-import com.tterrag.registrate.providers.DataGenContext;
-import com.tterrag.registrate.providers.RegistrateItemModelProvider;
-import com.tterrag.registrate.util.entry.ItemEntry;
-import com.tterrag.registrate.util.nullness.NonNullBiConsumer;
+import com.zurrtum.create.content.processing.sequenced.SequencedAssemblyItem;
+import org.antarcticgardens.cna.port.create.foundation.data.AssetLookup;
+import org.antarcticgardens.cna.port.registrate.providers.DataGenContext;
+import org.antarcticgardens.cna.port.registrate.providers.RegistrateItemModelProvider;
+import org.antarcticgardens.cna.port.registrate.util.entry.ItemEntry;
+import org.antarcticgardens.cna.port.registrate.util.nullness.NonNullBiConsumer;
 import net.minecraft.world.item.Item;
 import org.antarcticgardens.cna.content.electricity.wire.ElectricWireItem;
 
@@ -26,8 +26,6 @@ public class CNAItems {
     
     public static final ItemEntry<Item> NUCLEAR_FUEL =
             REGISTRATE.item("nuclear_fuel", Item::new)
-                    .tag(CNATags.Item.NUCLEAR_FUEL.tag)
-                    .tag(CNATags.createNuclearEnergyTag(28800))
                     .register();
 
     public static final ItemEntry<Item> THORIUM =

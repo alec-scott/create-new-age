@@ -1,9 +1,9 @@
 package org.antarcticgardens.cna.content.energising;
 
-import com.simibubi.create.AllShapes;
-import com.simibubi.create.content.kinetics.base.HorizontalKineticBlock;
-import com.simibubi.create.foundation.block.IBE;
-import com.simibubi.create.foundation.utility.CreateLang;
+import com.zurrtum.create.AllShapes;
+import com.zurrtum.create.content.kinetics.base.HorizontalKineticBlock;
+import com.zurrtum.create.foundation.block.IBE;
+import com.zurrtum.create.client.foundation.utility.CreateLang;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

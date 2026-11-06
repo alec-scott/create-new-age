@@ -2,7 +2,7 @@ package org.antarcticgardens.cna.data;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-import com.tterrag.registrate.providers.ProviderType;
+import org.antarcticgardens.cna.port.registrate.providers.ProviderType;
 import org.antarcticgardens.cna.CNASounds;
 import org.antarcticgardens.cna.CreateNewAge;
 import org.antarcticgardens.cna.CNATags;

@@ -1,0 +1,16 @@
+com.tterrag.registrate	org.antarcticgardens.cna.port.registrate
+com.simibubi.create.foundation.data.CreateRegistrate	org.antarcticgardens.cna.port.create.foundation.data.CreateRegistrate
+com.simibubi.create.foundation.data.AssetLookup	org.antarcticgardens.cna.port.create.foundation.data.AssetLookup
+com.simibubi.create.foundation.data.SharedProperties	org.antarcticgardens.cna.port.create.foundation.data.SharedProperties
+com.simibubi.create.foundation.data.TagGen	org.antarcticgardens.cna.port.create.foundation.data.TagGen
+com.simibubi.create.foundation.data.ModelGen	org.antarcticgardens.cna.port.create.foundation.data.ModelGen
+com.simibubi.create.foundation.data.BlockStateGen	org.antarcticgardens.cna.port.create.foundation.data.BlockStateGen
+com.simibubi.create.foundation.data.SpecialBlockStateGen	org.antarcticgardens.cna.port.create.foundation.data.SpecialBlockStateGen
+net.neoforged.neoforge.client.model.generators	org.antarcticgardens.cna.port.porting_lib.models.generators
+net.neoforged.neoforge.registries.DeferredHolder	org.antarcticgardens.cna.port.porting_lib.util.DeferredHolder
+net.neoforged.neoforge.registries.DeferredRegister	org.antarcticgardens.cna.port.porting_lib.util.DeferredRegister
+net.minecraft.resources.ResourceLocation	net.minecraft.resources.Identifier
+org.antarcticgardens.esl	org.antarcticgardens.cna.port.esl
+javax.annotation.Nullable	org.jetbrains.annotations.Nullable
+javax.annotation.Nonnull	org.jetbrains.annotations.NotNull
+net.neoforged.neoforge.common.ModConfigSpec	net.neoforged.neoforge.common.ModConfigSpec
