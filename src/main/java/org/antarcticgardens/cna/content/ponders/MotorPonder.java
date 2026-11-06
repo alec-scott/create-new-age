@@ -66,7 +66,7 @@ public class MotorPonder {
         Vec3 pos = util.vector().of(2.5, 2.5, 2.3);
         scene.overlay().chaseBoundingBoxOutline(PonderPalette.BLUE, pos, new AABB(pos, pos).inflate(0.08), 80);
         scene.overlay().showControls(
-                util.vector().of(2.5, 2.5, 2.25), Pointing.DOWN, 80).leftClick().withItem(AllItems.WRENCH.asStack());
+                util.vector().of(2.5, 2.5, 2.25), Pointing.DOWN, 80).leftClick().withItem(new net.minecraft.world.item.ItemStack(AllItems.WRENCH));
 
         scene.idle(10);
 

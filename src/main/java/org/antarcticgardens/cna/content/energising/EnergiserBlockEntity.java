@@ -1,5 +1,9 @@
 package org.antarcticgardens.cna.content.energising;
 
+import net.minecraft.world.level.storage.ValueOutput;
+
+import net.minecraft.world.level.storage.ValueInput;
+
 import com.zurrtum.create.content.kinetics.base.KineticBlockEntity;
 import com.zurrtum.create.api.behaviour.BlockEntityBehaviour;
 import com.zurrtum.create.client.foundation.utility.CreateLang;
@@ -21,7 +25,7 @@ import org.antarcticgardens.cna.port.esl.energy.SimpleEnergyStorage;
 
 import java.util.List;
 
-public class EnergiserBlockEntity extends KineticBlockEntity {
+public class EnergiserBlockEntity extends KineticBlockEntity implements com.zurrtum.create.client.api.goggles.IHaveGoggleInformation {
     private final SimpleEnergyStorage storage;
 
     public int tier;
@@ -49,15 +53,15 @@ public class EnergiserBlockEntity extends KineticBlockEntity {
     }
 
     @Override
-    protected void write(CompoundTag compound, HolderLookup.Provider registries, boolean clientPacket) {
+    protected void write(ValueOutput compound, boolean clientPacket) {
         compound.putLong("Energy", storage.getStoredEnergy());
-        super.write(compound, registries, clientPacket);
+        super.write(compound, clientPacket);
     }
 
     @Override
-    protected void read(CompoundTag compound, HolderLookup.Provider registries, boolean clientPacket) {
-        storage.setStoredEnergy(compound.getLong("Energy"));
-        super.read(compound, registries, clientPacket);
+    protected void read(ValueInput compound, boolean clientPacket) {
+        storage.setStoredEnergy(compound.getLongOr("Energy", 0));
+        super.read(compound, clientPacket);
     }
 
     protected AABB createRenderBoundingBox() {
@@ -66,7 +70,7 @@ public class EnergiserBlockEntity extends KineticBlockEntity {
     }
 
     @Override
-    public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
+    public void addBehaviours(List<BlockEntityBehaviour<?>> behaviours) {
         super.addBehaviours(behaviours);
         energisingBehaviour = new EnergiserBehaviour(this);
         behaviours.add(energisingBehaviour);
@@ -97,7 +101,7 @@ public class EnergiserBlockEntity extends KineticBlockEntity {
                     .style(ChatFormatting.AQUA).forGoggles(tooltip, 1);
         }
 
-        return super.addToGoggleTooltip(tooltip, isPlayerSneaking);
+        return true; // PORT-NOTE(26.1): kinetic stats come from the client CNAKineticTooltipBehaviour
     }
     
     public SimpleEnergyStorage getEnergyStorage() {

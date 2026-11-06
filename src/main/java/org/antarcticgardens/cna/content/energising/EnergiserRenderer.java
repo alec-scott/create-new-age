@@ -1,35 +1,71 @@
 package org.antarcticgardens.cna.content.energising;
 
-import net.minecraft.client.renderer.rendertype.RenderTypes;
-
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.zurrtum.create.client.content.kinetics.base.KineticBlockEntityRenderer;
-import com.zurrtum.create.client.content.kinetics.base.ShaftRenderer;
 import com.zurrtum.create.client.catnip.render.CachedBuffers;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
+import com.zurrtum.create.client.catnip.render.SuperByteBufferRenderState;
+import com.zurrtum.create.client.content.kinetics.base.SingleKineticRenderState;
+import com.zurrtum.create.client.foundation.blockEntity.renderer.SmartBlockEntityRenderer;
+import com.zurrtum.create.client.flywheel.api.visualization.VisualizationManager;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.client.renderer.feature.ModelFeatureRenderer.CrumblingOverlay;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.phys.Vec3;
+import org.jspecify.annotations.Nullable;
 
-public class EnergiserRenderer extends ShaftRenderer<EnergiserBlockEntity> {
+import static com.zurrtum.create.client.content.kinetics.base.KineticBlockEntityRenderer.*;
+
+/** PORT-NOTE(26.1): extract/submit; the shaft as Create Fly's ShaftRenderer, plus the charging beam. */
+public class EnergiserRenderer implements BlockEntityRenderer<EnergiserBlockEntity, EnergiserRenderer.EnergiserRenderState> {
     public EnergiserRenderer(BlockEntityRendererProvider.Context context) {
-        super(context);
+    }
+
+    public static class EnergiserRenderState extends SingleKineticRenderState {
+        public @Nullable SuperByteBufferRenderState beam;
     }
 
     @Override
-    protected void renderSafe(EnergiserBlockEntity blockEntity, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int light, int overlay) {
-        if (blockEntity.size > 0f && blockEntity.getLevel() != null) {
-            var consumer = buffer.getBuffer(RenderTypes.lightning());
-            float scalar = (1 - blockEntity.size * 0.12f) * 0.5f;
-            var buf = CachedBuffers.block(Blocks.WHITE_CONCRETE.defaultBlockState());
+    public EnergiserRenderState createRenderState() {
+        return new EnergiserRenderState();
+    }
 
-            buf.color(100, 150, 200, 200)
-                    .translate(scalar, -1.2, scalar)
-                    .scale(blockEntity.size * 0.12f, 1.3f, blockEntity.size * 0.12f)
-                    .renderInto(poseStack, consumer);
-
+    @Override
+    public void extractRenderState(EnergiserBlockEntity be, EnergiserRenderState state, float partialTicks, Vec3 cameraPosition,
+                                   @Nullable CrumblingOverlay breakProgress) {
+        Level level = SmartBlockEntityRenderer.extractBase(be, state, breakProgress);
+        Direction.Axis axis = getRotationAxisOf(state.blockState);
+        // With Flywheel the shaft is a visual; this renderer still runs for the extras (renderNormally, as upstream).
+        state.model = null;
+        if (!VisualizationManager.supportsVisualization(level)) {
+            state.model = CachedBuffers.block(KINETIC_BLOCK, shaft(axis)).cardinalLighting(level).light(state.lightCoords)
+                .color(getTintColor(be)).extractRenderState();
+            state.angle = getRotateAngleWithoutBeOffset(axis, be, state, level);
         }
-        super.renderSafe(blockEntity, partialTicks, poseStack, buffer, light, overlay);
+
+        state.beam = null;
+        if (be.size > 0f && level != null) {
+            float scalar = (1 - be.size * 0.12f) * 0.5f;
+            state.beam = CachedBuffers.block(Blocks.WHITE_CONCRETE.defaultBlockState())
+                    .color(100, 150, 200, 200)
+                    .translate(scalar, -1.2f, scalar)
+                    .scale(be.size * 0.12f, 1.3f, be.size * 0.12f)
+                    .extractRenderState();
+        }
+    }
+
+    @Override
+    public void submit(EnergiserRenderState state, PoseStack matrices, SubmitNodeCollector queue, CameraRenderState camera) {
+        if (state.beam != null)
+            state.beam.submit(RenderTypes.lightning(), matrices, queue);
+        if (state.model != null) {
+            matrices.pushPose();
+            state.submit(matrices, queue);
+            matrices.popPose();
+        }
     }
 }

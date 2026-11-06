@@ -38,7 +38,7 @@ import static org.antarcticgardens.cna.CreateNewAge.REGISTRATE;
 public class CNABlockEntityTypes {
     public static final BlockEntityEntry<EnergiserBlockEntity> ENERGISER = REGISTRATE
             .blockEntity("energiser", EnergiserBlockEntity::new)
-            .visual(() -> SingleAxisRotatingVisual::shaft)
+            .visual(() -> SingleAxisRotatingVisual::shaft, true)
             .validBlocks(CNABlocks.BASIC_ENERGISER, CNABlocks.ADVANCED_ENERGISER, CNABlocks.REINFORCED_ENERGISER)
             .renderer(() -> EnergiserRenderer::new)
             .register();
@@ -58,7 +58,7 @@ public class CNABlockEntityTypes {
 
     public static final BlockEntityEntry<CarbonBrushesBlockEntity> CARBON_BRUSHES = REGISTRATE
             .blockEntity("carbon_brushes", CarbonBrushesBlockEntity::new)
-            .visual(() -> SingleAxisRotatingVisual::shaft)
+            .visual(() -> SingleAxisRotatingVisual::shaft, true)
             .validBlocks(CNABlocks.CARBON_BRUSHES)
             .renderer(() -> CarbonBrushesRenderer::new)
             .register();
@@ -113,7 +113,7 @@ public class CNABlockEntityTypes {
 
     public static final BlockEntityEntry<StirlingEngineBlockEntity> STIRLING_ENGINE = REGISTRATE
             .blockEntity("stirling_engine", StirlingEngineBlockEntity::new)
-            .visual(() -> StirlingEngineVisual::new)
+            .visual(() -> StirlingEngineVisual::new, true)
             .validBlocks(CNABlocks.STIRLING_ENGINE)
             .renderer(() -> StirlingEngineRenderer::new)
             .register();

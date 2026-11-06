@@ -20,6 +20,12 @@ public class CoriumBlock extends FallingBlock {
         super(properties.randomTicks());
     }
 
+    // PORT-NOTE(26.1): FallingBlock.getDustColor is abstract now; use the map colour
+    @Override
+    public int getDustColor(BlockState state, net.minecraft.world.level.BlockGetter level, BlockPos pos) {
+        return state.getMapColor(level, pos).col;
+    }
+
     @Override
     protected MapCodec<? extends FallingBlock> codec() {
         return CODEC;

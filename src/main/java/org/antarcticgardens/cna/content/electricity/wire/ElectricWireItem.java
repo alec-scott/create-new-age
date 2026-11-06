@@ -8,7 +8,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -50,22 +49,22 @@ public class ElectricWireItem extends Item {
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(@NotNull Level level, @NotNull Player player, InteractionHand usedHand) {
+    public InteractionResult use(@NotNull Level level, @NotNull Player player, InteractionHand usedHand) {
         ItemStack item = player.getItemInHand(usedHand);
         BlockPos boundToPos = getBoundConnector(item);
 
         if (boundToPos != null && player.isShiftKeyDown()) {
             playUnboundSound(player);
-            player.displayClientMessage(Component.translatable("item.create_new_age.wire.message.unbound"), true);
+            player.sendOverlayMessage(Component.translatable("item.create_new_age.wire.message.unbound"));
             item.remove(BOUND_TO);
-            return InteractionResultHolder.success(item);
+            return InteractionResult.SUCCESS.heldItemTransformedTo(item);
         }
-        return InteractionResultHolder.pass(item);
+        return InteractionResult.PASS;
     }
 
     @Override
-    public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
-        if (isSelected) {
+    public void inventoryTick(ItemStack stack, net.minecraft.server.level.ServerLevel level, Entity entity, @org.jetbrains.annotations.Nullable net.minecraft.world.entity.EquipmentSlot slot) {
+        if (slot == net.minecraft.world.entity.EquipmentSlot.MAINHAND) {
             BlockPos boundToPos = getBoundConnector(stack);
             if (boundToPos == null)
                 return;
@@ -79,7 +78,7 @@ public class ElectricWireItem extends Item {
                 stack.remove(BOUND_TO);
                 playUnboundSound(entity);
                 if (entity instanceof Player pl)
-                    pl.displayClientMessage(Component.translatable("item.create_new_age.wire.message.too_far", maxLength), true);
+                    pl.sendOverlayMessage(Component.translatable("item.create_new_age.wire.message.too_far", maxLength));
             }
         }
     }
@@ -99,14 +98,14 @@ public class ElectricWireItem extends Item {
                 int maxLength = CNAConfig.getServer().maxWireLength.get();
 
                 if (boundToPos.equals(clickedPos)) {
-                    context.getPlayer().displayClientMessage(Component.translatable("item.create_new_age.wire.message.self_connect"), true);
+                    context.getPlayer().sendOverlayMessage(Component.translatable("item.create_new_age.wire.message.self_connect"));
                     context.getItemInHand().remove(BOUND_TO);
                     return InteractionResult.FAIL;
                 } else if (clickedPos.distSqr(boundToPos) > Mth.square(maxLength)) {
-                    context.getPlayer().displayClientMessage(Component.translatable("item.create_new_age.wire.message.too_far", maxLength), true);
+                    context.getPlayer().sendOverlayMessage(Component.translatable("item.create_new_age.wire.message.too_far", maxLength));
                     return InteractionResult.FAIL;
                 } else if (clickedConnector.isConnected(boundToPos)) {
-                    context.getPlayer().displayClientMessage(Component.translatable("item.create_new_age.wire.message.already_connected"), true);
+                    context.getPlayer().sendOverlayMessage(Component.translatable("item.create_new_age.wire.message.already_connected"));
                     context.getItemInHand().remove(BOUND_TO);
                     return InteractionResult.FAIL;
                 }
@@ -122,7 +121,7 @@ public class ElectricWireItem extends Item {
 
                     playBoundSound(context.getPlayer());
 
-                    context.getPlayer().displayClientMessage(Component.translatable("item.create_new_age.wire.message.connected"), true);
+                    context.getPlayer().sendOverlayMessage(Component.translatable("item.create_new_age.wire.message.connected"));
 
                     return InteractionResult.CONSUME;
                 } else
@@ -134,11 +133,11 @@ public class ElectricWireItem extends Item {
     }
 
     private void playBoundSound(Entity entity) {
-        entity.playSound(SoundEvents.LEASH_KNOT_PLACE, 1.0f, 1.0f);
+        entity.playSound(SoundEvents.LEAD_TIED, 1.0f, 1.0f);
     }
 
     private void playUnboundSound(Entity entity) {
-        entity.playSound(SoundEvents.LEASH_KNOT_BREAK, 1.0f, 1.0f);
+        entity.playSound(SoundEvents.LEAD_UNTIED, 1.0f, 1.0f);
     }
 
     public BlockPos getBoundConnector(ItemStack stack) {
@@ -154,9 +153,9 @@ public class ElectricWireItem extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        tooltipComponents.add(CreateLang.translate("tooltip.create_new_age.transfers").style(ChatFormatting.GRAY)
+    public void appendHoverText(ItemStack stack, TooltipContext context, net.minecraft.world.item.component.TooltipDisplay display, java.util.function.Consumer<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+        tooltipComponents.accept(CreateLang.translate("tooltip.create_new_age.transfers").style(ChatFormatting.GRAY)
                 .component());
-        tooltipComponents.add(CreateLang.text(" ").translate("tooltip.create_new_age.energy_per_tick", String.format("%,d", wireType.getConductivity())).style(ChatFormatting.AQUA).component());
+        tooltipComponents.accept(CreateLang.text(" ").translate("tooltip.create_new_age.energy_per_tick", String.format("%,d", wireType.getConductivity())).style(ChatFormatting.AQUA).component());
     }
 }

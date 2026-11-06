@@ -1,5 +1,13 @@
 package org.antarcticgardens.cna.content.heat.pipe;
 
+import net.minecraft.world.level.redstone.Orientation;
+
+import net.minecraft.world.level.ScheduledTickAccess;
+
+import net.minecraft.world.level.LevelReader;
+
+import net.minecraft.util.RandomSource;
+
 import com.zurrtum.create.api.boiler.BoilerHeater;
 import com.zurrtum.create.content.decoration.encasing.EncasableBlock;
 import com.zurrtum.create.content.equipment.wrench.IWrenchable;
@@ -59,7 +67,7 @@ public class HeatPipeBlock extends Block implements EntityBlock, IWrenchable, En
         return InteractionResult.TRY_WITH_EMPTY_HAND;
     }
 
-    private static BlockState checkHeatBlock(BlockState state, LevelAccessor world, BlockPos pos, Direction dir, BooleanProperty property) {
+    private static BlockState checkHeatBlock(BlockState state, net.minecraft.world.level.LevelReader world, BlockPos pos, Direction dir, BooleanProperty property) {
         return state.setValue(property,
                 world.getBlockEntity(pos.relative(dir)) instanceof HeatBlockEntity hbe
                         && hbe.canConnect(dir));
@@ -86,7 +94,7 @@ public class HeatPipeBlock extends Block implements EntityBlock, IWrenchable, En
         };
     }
 
-    public static BlockState updateState(BlockState state, LevelAccessor world, BlockPos pos) {
+    public static BlockState updateState(BlockState state, net.minecraft.world.level.LevelReader world, BlockPos pos) {
         for (Direction dir : Direction.values()) {
             state = checkHeatBlock(state, world, pos, dir, getDirectionProperty(dir));
         }
@@ -94,13 +102,13 @@ public class HeatPipeBlock extends Block implements EntityBlock, IWrenchable, En
     }
 
     @Override
-    public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor world, BlockPos pos, BlockPos neighborPos) {
+    public BlockState updateShape(BlockState state, LevelReader world, ScheduledTickAccess ticks, BlockPos pos, Direction direction, BlockPos neighborPos, BlockState neighborState, RandomSource random) {
         return updateState(state, world, pos);
     }
 
     @Override
-    public void neighborChanged(BlockState state, Level level, BlockPos pos, Block neighborBlock, BlockPos neighborPos, boolean movedByPiston) {
-        super.neighborChanged(state, level, pos, neighborBlock, neighborPos, movedByPiston);
+    public void neighborChanged(BlockState state, Level level, BlockPos pos, Block neighborBlock, @Nullable Orientation orientation, boolean movedByPiston) {
+        super.neighborChanged(state, level, pos, neighborBlock, orientation, movedByPiston);
         level.scheduleTick(pos, this, 1);
     }
 

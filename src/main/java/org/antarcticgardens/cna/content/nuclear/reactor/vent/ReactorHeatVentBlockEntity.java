@@ -1,5 +1,9 @@
 package org.antarcticgardens.cna.content.nuclear.reactor.vent;
 
+import net.minecraft.world.level.storage.ValueOutput;
+
+import net.minecraft.world.level.storage.ValueInput;
+
 import com.zurrtum.create.client.api.goggles.IHaveGoggleInformation;
 import com.zurrtum.create.client.foundation.utility.CreateLang;
 import net.minecraft.ChatFormatting;
@@ -33,17 +37,17 @@ public class ReactorHeatVentBlockEntity extends RodFindingReactorBlockEntity imp
     public float heat = 0;
 
     @Override
-    protected void read(CompoundTag tag, HolderLookup.Provider registries, boolean clientPacket) {
-        heat = tag.getFloat("heat");
-        extract = tag.getFloat("extract");
-        super.read(tag, registries, clientPacket);
+    protected void read(ValueInput tag, boolean clientPacket) {
+        heat = tag.getFloatOr("heat", 0);
+        extract = tag.getFloatOr("extract", 0);
+        super.read(tag, clientPacket);
     }
 
     @Override
-    protected void write(CompoundTag tag, HolderLookup.Provider registries, boolean clientPacket) {
+    protected void write(ValueOutput tag, boolean clientPacket) {
         tag.putFloat("heat", heat);
         tag.putFloat("extract", extract);
-        super.write(tag, registries, clientPacket);
+        super.write(tag, clientPacket);
     }
 
     @Override

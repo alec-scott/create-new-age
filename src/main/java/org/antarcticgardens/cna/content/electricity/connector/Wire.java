@@ -1,7 +1,6 @@
 package org.antarcticgardens.cna.content.electricity.connector;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
@@ -56,7 +55,13 @@ public class Wire {
         return new Vector3f(up);
     }
 
-    public void render(VertexConsumer consumer, PoseStack poseStack, Level level) {
+    /**
+     * PORT-NOTE(26.1): was render(VertexConsumer, PoseStack, Level). Renderers extract now and submit later, so the
+     * quads (positions relative to the block the wire starts in, uv, light) are recorded into {@code out} during
+     * extraction; {@link ElectricalConnectorRenderer} replays them in submitCustomGeometry.
+     */
+    public void render(java.util.List<float[]> out, Level level) {
+        PoseStack poseStack = new PoseStack();
         poseStack.translate(start.x - Math.floor(start.x), start.y - Math.floor(start.y), start.z - Math.floor(start.z));
         poseStack.mulPose(new Matrix4f().rotateTowards(direction, up));
 
@@ -80,10 +85,10 @@ public class Wire {
             float ht = thickness / 2;
             float vOffset = (sectionId % 2 == 0) ? 0.5f : 0.0f;
             for (int i = -1; i <= 1; i += 2) {
-                addVertex(consumer,  ht,  ht * i + lastCatenary, 0.0f,          0.0f, 0.5f + vOffset, poseStack, light);
-                addVertex(consumer, -ht, -ht * i + lastCatenary, 0.0f,          0.0f, 0.0f + vOffset, poseStack, light);
-                addVertex(consumer, -ht, -ht * i + catenary,       sectionLength, 1.0f, 0.0f + vOffset, poseStack, light);
-                addVertex(consumer,  ht,  ht * i + catenary,       sectionLength, 1.0f, 0.5f + vOffset, poseStack, light);
+                addVertex(out,  ht,  ht * i + lastCatenary, 0.0f,          0.0f, 0.5f + vOffset, poseStack, light);
+                addVertex(out, -ht, -ht * i + lastCatenary, 0.0f,          0.0f, 0.0f + vOffset, poseStack, light);
+                addVertex(out, -ht, -ht * i + catenary,       sectionLength, 1.0f, 0.0f + vOffset, poseStack, light);
+                addVertex(out,  ht,  ht * i + catenary,       sectionLength, 1.0f, 0.5f + vOffset, poseStack, light);
             }
 
             lastCatenary = catenary;
@@ -91,11 +96,8 @@ public class Wire {
         }
     }
 
-    private static void addVertex(VertexConsumer consumer, float x, float y, float z, float u, float v, PoseStack poseStack, int packedLight) {
-        consumer.addVertex(poseStack.last().pose(), x, y, z)
-                .setColor(1.0f, 1.0f, 1.0f, 1.0f)
-                .setUv(u, v)
-                .setLight(packedLight)
-                .setNormal(0.0f, 1.0f, 0.0f);
+    private static void addVertex(java.util.List<float[]> out, float x, float y, float z, float u, float v, PoseStack poseStack, int packedLight) {
+        org.joml.Vector3f p = poseStack.last().pose().transformPosition(x, y, z, new org.joml.Vector3f());
+        out.add(new float[]{p.x, p.y, p.z, u, v, Float.intBitsToFloat(packedLight)});
     }
 }

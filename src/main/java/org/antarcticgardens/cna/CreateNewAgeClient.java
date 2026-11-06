@@ -15,6 +15,17 @@ public class CreateNewAgeClient implements ClientModInitializer {
         CNAPartialModels.load();
         CNASpriteShifts.load();
         CreateRegistrate.registerBlockModels();
+        org.antarcticgardens.cna.client.CNABlockEntityBehaviours.register();
         PonderIndex.addPlugin(new CNAPonders());
+
+        // Was Block.appendHoverText (removed in 26.1): block item tooltips, right under the item name
+        net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback.EVENT.register((stack, context, flag, lines) -> {
+            if (stack.getItem() instanceof net.minecraft.world.item.BlockItem blockItem
+                    && blockItem.getBlock() instanceof org.antarcticgardens.cna.util.HoverTextBlock block) {
+                java.util.List<net.minecraft.network.chat.Component> extra = new java.util.ArrayList<>();
+                block.appendHoverText(stack, context, extra, flag);
+                lines.addAll(Math.min(1, lines.size()), extra);
+            }
+        });
     }
 }

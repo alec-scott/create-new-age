@@ -1,5 +1,9 @@
 package org.antarcticgardens.cna.content.electricity.generation.brushes;
 
+import net.minecraft.world.level.storage.ValueOutput;
+
+import net.minecraft.world.level.storage.ValueInput;
+
 import com.zurrtum.create.client.api.goggles.IHaveGoggleInformation;
 import com.zurrtum.create.content.kinetics.base.DirectionalKineticBlock;
 import com.zurrtum.create.content.kinetics.base.KineticBlockEntity;
@@ -44,19 +48,19 @@ public class CarbonBrushesBlockEntity extends KineticBlockEntity implements IHav
     }
 
     @Override
-    protected void write(CompoundTag compound, HolderLookup.Provider registries, boolean clientPacket) {
+    protected void write(ValueOutput compound, boolean clientPacket) {
         compound.putInt("lastOutput", lastOutput);
-        super.write(compound, registries, clientPacket);
+        super.write(compound, clientPacket);
     }
 
     @Override
-    protected void read(CompoundTag compound, HolderLookup.Provider registries, boolean clientPacket) {
-        lastOutput = compound.getInt("lastOutput");
-        super.read(compound, registries, clientPacket);
+    protected void read(ValueInput compound, boolean clientPacket) {
+        lastOutput = compound.getIntOr("lastOutput", 0);
+        super.read(compound, clientPacket);
     }
 
     @Override
-    public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
+    public void addBehaviours(List<BlockEntityBehaviour<?>> behaviours) {
         super.addBehaviours(behaviours);
     }
 
@@ -90,7 +94,7 @@ public class CarbonBrushesBlockEntity extends KineticBlockEntity implements IHav
     @Override
     public void tick() {
         super.tick();
-        if (level == null || level.isClientSide) return;
+        if (level == null || level.isClientSide()) return;
         Direction facing = getBlockState().getValue(DirectionalKineticBlock.FACING);
 
         storage.setCapacity(lastOutput * 20L);
@@ -108,7 +112,7 @@ public class CarbonBrushesBlockEntity extends KineticBlockEntity implements IHav
 
     @Override
     public void lazyTick() {
-        if (level == null || level.isClientSide) return;
+        if (level == null || level.isClientSide()) return;
         if (syncOut > 0) {
             syncOut = 0;
             setChanged();

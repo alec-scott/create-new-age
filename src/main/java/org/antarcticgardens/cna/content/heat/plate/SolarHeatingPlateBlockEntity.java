@@ -1,5 +1,9 @@
 package org.antarcticgardens.cna.content.heat.plate;
 
+import net.minecraft.world.level.storage.ValueOutput;
+
+import net.minecraft.world.level.storage.ValueInput;
+
 import com.zurrtum.create.client.api.goggles.IHaveGoggleInformation;
 import com.zurrtum.create.client.foundation.utility.CreateLang;
 import net.minecraft.ChatFormatting;
@@ -15,6 +19,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import com.zurrtum.create.foundation.blockEntity.SmartBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.antarcticgardens.cna.config.CNAConfig;
@@ -24,7 +29,13 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class SolarHeatingPlateBlockEntity extends BlockEntity implements HeatBlockEntity, IHaveGoggleInformation {
+public class SolarHeatingPlateBlockEntity extends SmartBlockEntity implements HeatBlockEntity, IHaveGoggleInformation {
+    // PORT-NOTE(26.1): was a plain BlockEntity; Create Fly only shows goggle tooltips through a client TooltipBehaviour,
+    // which needs a SmartBlockEntity (client/CNABlockEntityBehaviours). NBT moved to read/write (synced by Create Fly).
+    @Override
+    public void addBehaviours(java.util.List<com.zurrtum.create.api.behaviour.BlockEntityBehaviour<?>> behaviours) {
+    }
+
     private final int energyPerSecond;
     private float last;
 
@@ -44,15 +55,15 @@ public class SolarHeatingPlateBlockEntity extends BlockEntity implements HeatBlo
     public float heat = 0;
 
     @Override
-    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.loadAdditional(tag, registries);
-        heat = tag.getFloat("heat");
-        last = tag.getFloat("last");
+    protected void read(ValueInput tag, boolean clientPacket) {
+        super.read(tag, clientPacket);
+        heat = tag.getFloatOr("heat", 0);
+        last = tag.getFloatOr("last", 0);
     }
 
     @Override
-    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.saveAdditional(tag, registries);
+    protected void write(ValueOutput tag, boolean clientPacket) {
+        super.write(tag, clientPacket);
         tag.putFloat("heat", heat);
         tag.putFloat("last", last);
     }
@@ -79,17 +90,6 @@ public class SolarHeatingPlateBlockEntity extends BlockEntity implements HeatBlo
         setChanged();
     }
 
-    @Nullable
-    @Override
-    public Packet<ClientGamePacketListener> getUpdatePacket() {
-        return ClientboundBlockEntityDataPacket.create(this);
-    }
-
-
-    @Override
-    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
-        return  saveWithoutMetadata(registries);
-    }
 
     @Override
     public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
@@ -107,16 +107,9 @@ public class SolarHeatingPlateBlockEntity extends BlockEntity implements HeatBlo
     public void tick(BlockPos blockPos, Level world, BlockState blockState) {
         double generationMultiplier = CNAConfig.getServer().solarPanelHeatMultiplier.get();
 
-        int dark = 0;
-        if (world.isClientSide()) {
-            // update sky could also work but this feels more right.
-            double d = 1.0 - (double)(world.getRainLevel(1.0F) * 5.0F) / 16.0;
-            double e = 1.0 - (double)(world.getThunderLevel(1.0F) * 5.0F) / 16.0;
-            double f = 0.5 + 2.0 * Mth.clamp(Mth.cos(world.getTimeOfDay(1.0F) * 6.2831855F), -0.25, 0.25);
-            dark = (int)((1.0 - f * d * e) * 11.0);
-        } else {
-            dark = world.getSkyDarken();
-        }
+        // PORT-NOTE(26.1): Level.getTimeOfDay is gone (world clocks); the client-side estimate is replaced by the
+        // sky darkness on both sides. Only affects the client copy of the generation value (goggles).
+        int dark = world.getSkyDarken();
         dark *= 2;
         HeatBlockEntity.transferAround(this);
         HeatBlockEntity.handleOverheat(this);

@@ -1,5 +1,9 @@
 package org.antarcticgardens.cna.content.energising;
 
+import net.minecraft.world.level.storage.ValueOutput;
+
+import net.minecraft.world.level.storage.ValueInput;
+
 import com.zurrtum.create.content.kinetics.belt.BeltHelper;
 import com.zurrtum.create.content.kinetics.belt.behaviour.BeltProcessingBehaviour;
 import com.zurrtum.create.content.kinetics.belt.behaviour.TransportedItemStackHandlerBehaviour;
@@ -42,23 +46,12 @@ public class EnergiserBehaviour extends BeltProcessingBehaviour {
             return null;
         }
 
-        Optional<RecipeHolder<EnergisingRecipe>> assemblyRecipe =
-                SequencedAssemblyRecipe.getRecipe(getWorld(), stack, CNARecipeTypes.ENERGISING.getType(), EnergisingRecipe.class);
-
-
-        if (assemblyRecipe.isPresent()) {
-            return assemblyRecipe.get().value();
-        }
-
-        List<RecipeHolder<EnergisingRecipe>> recipes = be.getLevel().getRecipeManager().getAllRecipesFor(CNARecipeTypes.ENERGISING.getType());
-
-        for (RecipeHolder<EnergisingRecipe> recipe : recipes) {
-            if (recipe.value().test(stack)) {
-                return recipe.value();
-            }
-        }
-        return null;
-    
+        // PORT-NOTE(26.1): recipes are server side only (recipeAccess); Create Fly generates sequenced assembly steps as
+        // plain recipes, so one lookup covers both (was SequencedAssemblyRecipe.getRecipe + a scan of all recipes).
+        if (!(be.getLevel() instanceof net.minecraft.server.level.ServerLevel serverLevel))
+            return null;
+        return serverLevel.recipeAccess().getRecipeFor(CNARecipeTypes.ENERGISING, new net.minecraft.world.item.crafting.SingleRecipeInput(stack), serverLevel)
+                .map(RecipeHolder::value).orElse(null);
     }
 
     public EnergisingRecipe currentRecipe;
@@ -68,23 +61,23 @@ public class EnergiserBehaviour extends BeltProcessingBehaviour {
     private boolean shouldCreateParticles = false;
 
     @Override
-    public void read(CompoundTag nbt, HolderLookup.Provider registries, boolean clientPacket) {
-        charged = nbt.getLong("charged");
-        needed = nbt.getLong("needed");
-        shouldCreateParticles = nbt.getBoolean("shouldCreateParticles");
-        capacitorMode = nbt.getBoolean("capacitorModer");
-        super.read(nbt, registries, clientPacket);
+    public void read(ValueInput nbt, boolean clientPacket) {
+        charged = nbt.getLongOr("charged", 0);
+        needed = nbt.getLongOr("needed", 0);
+        shouldCreateParticles = nbt.getBooleanOr("shouldCreateParticles", false);
+        capacitorMode = nbt.getBooleanOr("capacitorModer", false);
+        super.read(nbt, clientPacket);
     }
 
     @Override
-    public void write(CompoundTag nbt, HolderLookup.Provider registries, boolean clientPacket) {
+    public void write(ValueOutput nbt, boolean clientPacket) {
         nbt.putLong("charged", charged);
         nbt.putLong("needed", needed);
         nbt.putBoolean("shouldCreateParticles",shouldCreateParticles);
         nbt.putBoolean("capacitorMode", capacitorMode);
         if (clientPacket)
             shouldCreateParticles = false;
-        super.write(nbt, registries, clientPacket);
+        super.write(nbt, clientPacket);
     }
 
     public long sinceUpdate = 0;
@@ -128,7 +121,7 @@ public class EnergiserBehaviour extends BeltProcessingBehaviour {
                 var rand = be.getLevel().getRandom();
                 for (int i = 0 ; i < 6 ; i++) {
                     be.getLevel().addParticle(ParticleTypes.GLOW,
-                            false,
+                            false, false,
                             be.getBlockPos().getX() + 0.5 + (rand.nextFloat() - 0.5) * 0.4,
                             be.getBlockPos().getY() - 1.4 + (rand.nextFloat() - 0.5) * 0.4,
                             be.getBlockPos().getZ() + 0.5 + (rand.nextFloat() - 0.5) * 0.4,
@@ -189,7 +182,7 @@ public class EnergiserBehaviour extends BeltProcessingBehaviour {
         sinceUpdate = 10;
 
         if (charged >= needed) {
-            List<TransportedItemStack> out = currentRecipe.rollResults(handler.getWorld().getRandom()).stream()
+            List<TransportedItemStack> out = currentRecipe.assemble(new net.minecraft.world.item.crafting.SingleRecipeInput(transportedItemStack.stack), handler.getLevel().getRandom()).stream()
                     .map(stack -> {
                         TransportedItemStack copy = transportedItemStack.copy();
                         boolean centered = BeltHelper.isItemUpright(stack);
@@ -245,7 +238,7 @@ public class EnergiserBehaviour extends BeltProcessingBehaviour {
 
         currentRecipe = getRecipe(transportedItemStack.stack);
         sinceUpdate = 10;
-        if (currentRecipe == null || currentRecipe.getIngredients().size() > 1)
+        if (currentRecipe == null)
             return ProcessingResult.PASS;
 
         return ProcessingResult.HOLD;

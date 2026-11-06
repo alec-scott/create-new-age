@@ -12,7 +12,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.entity.EntityTypeTest;
 import net.minecraft.world.phys.*;
-import net.neoforged.neoforge.common.Tags;
+import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags;
 import org.antarcticgardens.cna.CNAEffects;
 import org.antarcticgardens.cna.CNAItems;
 import org.antarcticgardens.cna.CNATags;
@@ -73,12 +73,14 @@ public class NuclearUtil {
             return true;
 
         if (entity instanceof LivingEntity le) {
-            for (ItemStack piece : le.getArmorSlots()) {
+            for (net.minecraft.world.entity.EquipmentSlot slot : net.minecraft.world.entity.EquipmentSlot.values()) {
+                if (slot.getType() != net.minecraft.world.entity.EquipmentSlot.Type.HUMANOID_ARMOR) continue;
+                ItemStack piece = le.getItemBySlot(slot);
                 if (!piece.is(CNATags.Item.HAZMAT_SUIT.tag))
                     return false;
             }
         }/* else if (entity instanceof ItemEntity ie) {
-            return !ie.getItem().is(Tags.Items.MUSIC_DISCS);
+            return !ie.getItem().is(ConventionalItemTags.MUSIC_DISCS);
         }*/
 
         return true;

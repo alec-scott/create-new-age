@@ -1,57 +1,77 @@
 package org.antarcticgardens.cna.content.heat.stirling;
 
-import net.minecraft.client.renderer.rendertype.RenderTypes;
-
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.zurrtum.create.AllBlocks;
-import com.zurrtum.create.client.content.kinetics.base.KineticBlockEntityRenderer;
-import com.zurrtum.create.client.flywheel.api.visualization.VisualizationManager;
 import com.zurrtum.create.catnip.math.AngleHelper;
 import com.zurrtum.create.client.catnip.render.CachedBuffers;
-import com.zurrtum.create.client.catnip.render.SuperByteBuffer;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
+import com.zurrtum.create.client.catnip.render.SuperByteBufferRenderState;
+import com.zurrtum.create.client.content.kinetics.base.KineticBlockEntityRenderer;
+import com.zurrtum.create.client.flywheel.api.visualization.VisualizationManager;
+import com.zurrtum.create.client.foundation.blockEntity.renderer.SmartBlockEntityRenderer;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.client.renderer.feature.ModelFeatureRenderer.CrumblingOverlay;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.phys.Vec3;
+import org.jspecify.annotations.Nullable;
 
-public class StirlingEngineRenderer extends KineticBlockEntityRenderer<StirlingEngineBlockEntity> {
-
+/**
+ * PORT-NOTE(26.1): extract/submit. The shaft is Create Fly's kinetic path (skipped under Flywheel, where the visual
+ * draws it); the small flywheel is drawn here when visualization is supported, as upstream.
+ */
+public class StirlingEngineRenderer extends KineticBlockEntityRenderer<StirlingEngineBlockEntity, StirlingEngineRenderer.StirlingRenderState> {
     public StirlingEngineRenderer(BlockEntityRendererProvider.Context context) {
         super(context);
     }
 
-    @Override
-    protected void renderSafe(StirlingEngineBlockEntity be, float partialTicks, PoseStack ms, MultiBufferSource buffer,
-                              int light, int overlay) {
-        super.renderSafe(be, partialTicks, ms, buffer, light, overlay);
+    public static class StirlingRenderState extends KineticRenderState {
+        public @Nullable SuperByteBufferRenderState wheel;
+    }
 
-        if (!VisualizationManager.supportsVisualization((be.getLevel())))
+    @Override
+    public StirlingRenderState createRenderState() {
+        return new StirlingRenderState();
+    }
+
+    @Override
+    public void extractRenderState(StirlingEngineBlockEntity be, StirlingRenderState state, float partialTicks, Vec3 cameraPos,
+                                   @Nullable CrumblingOverlay crumblingOverlay) {
+        super.extractRenderState(be, state, partialTicks, cameraPos, crumblingOverlay);
+        state.wheel = null;
+        Level level = be.getLevel();
+        if (!VisualizationManager.supportsVisualization(level))
+            return;
+        if (!state.support)
             return;
 
-        BlockState blockState = AllBlocks.FLYWHEEL.getDefaultState().setValue(BlockStateProperties.AXIS,
-                be.getBlockState().getValue(BlockStateProperties.AXIS)
-                );
+        updateBaseRenderState(be, state, level, crumblingOverlay);
+        Direction.Axis axis = be.getBlockState().getValue(BlockStateProperties.AXIS);
+        BlockState wheelState = AllBlocks.FLYWHEEL.defaultBlockState().setValue(BlockStateProperties.AXIS, axis);
 
         float speed = be.visualSpeed.getValue(partialTicks) * 3 / 10f;
         float angle = be.angle + speed * partialTicks;
 
-        VertexConsumer vb = buffer.getBuffer(RenderTypes.solid());
-        renderFlywheel(be, ms, light, blockState, angle, vb);
+        state.wheel = CachedBuffers.block(wheelState)
+                .rotateCentered(AngleHelper.rad(angle), Direction.get(Direction.AxisDirection.POSITIVE, axis))
+                .center().scale(0.2f, 0.2f, 0.2f).uncenter()
+                .light(SmartBlockEntityRenderer.getLightCoords(level, be.getBlockPos()))
+                .extractRenderState();
     }
 
-    private void renderFlywheel(StirlingEngineBlockEntity be, PoseStack ms, int light, BlockState blockState, float angle,
-                                VertexConsumer vb) {
-        SuperByteBuffer wheel = CachedBuffers.block(blockState).center().scale(0.2f, 0.2f, 0.2f).uncenter();
-        kineticRotationTransform(wheel, be, getRotationAxisOf(be), AngleHelper.rad(angle), light);
-        wheel.renderInto(ms, vb);
+    @Override
+    public void submit(StirlingRenderState state, PoseStack matrices, SubmitNodeCollector queue, CameraRenderState cameraState) {
+        super.submit(state, matrices, queue, cameraState);
+        if (state.wheel != null)
+            state.wheel.submit(matrices, queue);
     }
 
     @Override
     protected BlockState getRenderedBlockState(StirlingEngineBlockEntity be) {
-        return AllBlocks.SHAFT.getDefaultState().setValue(BlockStateProperties.AXIS,
-                be.getBlockState().getValue(BlockStateProperties.AXIS)
-        );
+        return AllBlocks.SHAFT.defaultBlockState().setValue(BlockStateProperties.AXIS,
+                be.getBlockState().getValue(BlockStateProperties.AXIS));
     }
 }

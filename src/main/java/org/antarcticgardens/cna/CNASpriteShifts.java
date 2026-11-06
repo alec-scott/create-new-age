@@ -13,6 +13,9 @@ public class CNASpriteShifts {
     public static CTSpriteShiftEntry REDSTONE_MAGNET = omni("redstone_magnet");
 
 
+    public static void load() {
+    }
+
     private static CTSpriteShiftEntry omni(String name) {
         return getCT(AllCTTypes.OMNIDIRECTIONAL, name);
     }

@@ -1,5 +1,11 @@
 package org.antarcticgardens.cna.content.nuclear.reactor.fuelacceptor;
 
+import org.antarcticgardens.cna.port.minecraft.CNAValueIO;
+
+import net.minecraft.world.level.storage.ValueOutput;
+
+import net.minecraft.world.level.storage.ValueInput;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -29,15 +35,22 @@ public class ReactorFuelAcceptorBlockEntity extends RodFindingReactorBlockEntity
     }
 
     @Override
-    protected void write(CompoundTag compound, HolderLookup.Provider registries, boolean clientPacket) {
-        compound.put("contents", container.createTag(registries));
-        super.write(compound, registries, clientPacket);
+    protected void write(ValueOutput compound, boolean clientPacket) {
+        container.storeAsItemList(compound.list("contents", ItemStack.OPTIONAL_CODEC));
+        super.write(compound, clientPacket);
     }
 
     @Override
-    protected void read(CompoundTag compound, HolderLookup.Provider registries, boolean clientPacket) {
-        container.fromTag(compound.getList("contents", compound.TAG_COMPOUND), registries);
-        super.read(compound, registries, clientPacket);
+    protected void read(ValueInput compound, boolean clientPacket) {
+        container.fromItemList(compound.listOrEmpty("contents", ItemStack.OPTIONAL_CODEC));
+        super.read(compound, clientPacket);
+    }
+
+    // PORT-NOTE(26.1): was NeoForgeReactorFuelAcceptorBlockEntity (Capabilities.ItemHandler.BLOCK over an InvWrapper)
+    public static void registerItemStorage() {
+        net.fabricmc.fabric.api.transfer.v1.item.ItemStorage.SIDED.registerForBlockEntity(
+                (be, direction) -> net.fabricmc.fabric.api.transfer.v1.item.ContainerStorage.of(be.container, direction),
+                org.antarcticgardens.cna.CNABlockEntityTypes.REACTOR_FUEL_ACCEPTOR.get());
     }
 
     @Override
@@ -71,7 +84,7 @@ public class ReactorFuelAcceptorBlockEntity extends RodFindingReactorBlockEntity
             for (int i = 0 ; i < container.getContainerSize() ; i++) {
                 ItemStack stack = container.getItem(i);
                 if (stack.is(CNATags.Item.NUCLEAR_FUEL.tag)) {
-                    stack.getTags().forEach(itemTagKey -> {
+                    stack.typeHolder().tags().forEach(itemTagKey -> {
                         if (itemTagKey.location().getNamespace().equals(CreateNewAge.MOD_ID)) {
                             String path = itemTagKey.location().getPath();
                             if (path.startsWith("nuclear/energy_")) {

@@ -34,7 +34,7 @@ public class GeneratorCoilBlock extends RotatedPillarKineticBlock implements IBE
 
     @Override
     public RenderShape getRenderShape(BlockState state) {
-        return RenderShape.ENTITYBLOCK_ANIMATED;
+        return RenderShape.INVISIBLE;
     }
 
     @Override
@@ -52,7 +52,7 @@ public class GeneratorCoilBlock extends RotatedPillarKineticBlock implements IBE
         IPlacementHelper helper = PlacementHelpers.get(CreateNewAge.getInstance().getMagnetPlacementHelperId());
         if (helper.matchesItem(itemInHand))
             return helper.getOffset(player, level, state, pos, hitResult)
-                    .placeInWorld(level, (BlockItem) itemInHand.getItem(), player, hand, hitResult);
+                    .placeInWorld(level, (BlockItem) itemInHand.getItem(), player, hand);
 
         return InteractionResult.TRY_WITH_EMPTY_HAND;
     }

@@ -84,6 +84,7 @@ public class CreateNewAge implements ModInitializer {
 
         magnetPlacementHelperId = PlacementHelpers.register(new MagnetPlacementHelper());
 
+        org.antarcticgardens.cna.content.nuclear.reactor.fuelacceptor.ReactorFuelAcceptorBlockEntity.registerItemStorage();
         CNAComputerCraftProxy.register();
 
         ServerTickEvents.START_LEVEL_TICK.register(NetworkTicker::tickWorld);

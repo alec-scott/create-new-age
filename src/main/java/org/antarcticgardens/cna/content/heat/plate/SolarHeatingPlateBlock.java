@@ -24,7 +24,7 @@ import java.util.List;
 
 import static org.antarcticgardens.cna.content.heat.pipe.HeatPipeBlock.massPipe;
 
-public class SolarHeatingPlateBlock extends Block implements EntityBlock, IWrenchable {
+public class SolarHeatingPlateBlock extends Block implements EntityBlock, IWrenchable, org.antarcticgardens.cna.util.HoverTextBlock {
     private final BlockEntityEntry<?> entry;
     private final int strength;
 

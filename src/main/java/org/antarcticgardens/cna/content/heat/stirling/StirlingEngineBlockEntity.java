@@ -1,5 +1,9 @@
 package org.antarcticgardens.cna.content.heat.stirling;
 
+import net.minecraft.world.level.storage.ValueOutput;
+
+import net.minecraft.world.level.storage.ValueInput;
+
 import com.zurrtum.create.content.kinetics.base.GeneratingKineticBlockEntity;
 import com.zurrtum.create.client.foundation.utility.CreateLang;
 import com.zurrtum.create.catnip.animation.LerpedFloat;
@@ -17,7 +21,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class StirlingEngineBlockEntity extends GeneratingKineticBlockEntity implements HeatBlockEntity {
+public class StirlingEngineBlockEntity extends GeneratingKineticBlockEntity implements HeatBlockEntity, com.zurrtum.create.client.api.goggles.IHaveGoggleInformation {
 
     LerpedFloat visualSpeed = LerpedFloat.linear();
     float angle;
@@ -28,8 +32,8 @@ public class StirlingEngineBlockEntity extends GeneratingKineticBlockEntity impl
     }
 
     @Override
-    protected void write(CompoundTag compound, HolderLookup.Provider registries, boolean clientPacket) {
-        super.write(compound, registries, clientPacket);
+    protected void write(ValueOutput compound, boolean clientPacket) {
+        super.write(compound, clientPacket);
         compound.putFloat("heat", heat);
         compound.putFloat("gSpeed", speed);
     }
@@ -56,17 +60,17 @@ public class StirlingEngineBlockEntity extends GeneratingKineticBlockEntity impl
         CreateLang.translate("tooltip.create_new_age.temperature.ps", StringFormatUtil.formatFloat(speed * 3.125f)) // 3.125 is is 50/16
                 .style(ChatFormatting.AQUA).forGoggles(tooltip, 2);
 
-        return super.addToGoggleTooltip(tooltip, isPlayerSneaking);
+        return true; // PORT-NOTE(26.1): kinetic stats come from the client CNAKineticTooltipBehaviour
     }
 
     @Override
-    protected void read(CompoundTag compound, HolderLookup.Provider registries, boolean clientPacket) {
-        super.read(compound, registries, clientPacket);
+    protected void read(ValueInput compound, boolean clientPacket) {
+        super.read(compound, clientPacket);
         if (clientPacket)
             visualSpeed.chase(getGeneratedSpeed(), 1 / 64f, LerpedFloat.Chaser.EXP);
 
-        heat = compound.getFloat("heat");
-        speed = compound.getFloat("gSpeed");
+        heat = compound.getFloatOr("heat", 0);
+        speed = compound.getFloatOr("gSpeed", 0);
     }
 
     public float speed = 0;
@@ -107,7 +111,7 @@ public class StirlingEngineBlockEntity extends GeneratingKineticBlockEntity impl
             }
         }
 
-        if (!getLevel().isClientSide) {
+        if (!getLevel().isClientSide()) {
             HeatBlockEntity.trySync(this);
             return;
         }

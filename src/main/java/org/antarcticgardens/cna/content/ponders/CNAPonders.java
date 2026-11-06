@@ -3,7 +3,7 @@ package org.antarcticgardens.cna.content.ponders;
 import org.antarcticgardens.cna.port.registrate.util.entry.ItemProviderEntry;
 import org.antarcticgardens.cna.port.registrate.util.entry.RegistryEntry;
 import com.zurrtum.create.client.ponder.api.level.PonderLevel;
-import net.createmod.ponder.api.registration.*;
+import com.zurrtum.create.client.ponder.api.registration.*;
 import net.minecraft.resources.Identifier;
 import org.antarcticgardens.cna.CNABlocks;
 import org.antarcticgardens.cna.CNAItems;

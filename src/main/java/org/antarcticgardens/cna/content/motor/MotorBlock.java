@@ -1,5 +1,9 @@
 package org.antarcticgardens.cna.content.motor;
 
+import org.jetbrains.annotations.Nullable;
+
+import net.minecraft.world.level.redstone.Orientation;
+
 import com.zurrtum.create.content.equipment.wrench.IWrenchable;
 import com.zurrtum.create.content.kinetics.base.DirectionalKineticBlock;
 import com.zurrtum.create.content.kinetics.base.IRotate;
@@ -34,7 +38,7 @@ import org.antarcticgardens.cna.util.StringFormatUtil;
 
 import java.util.List;
 
-public class MotorBlock extends DirectionalKineticBlock implements IRotate, IBE<MotorBlockEntity> {
+public class MotorBlock extends DirectionalKineticBlock implements IRotate, IBE<MotorBlockEntity>, org.antarcticgardens.cna.util.HoverTextBlock {
     protected static final VoxelShape Y_AXIS_AABB = Block.box(2.0, 0.0, 2.0, 14.0, 16.0, 14.0);
     protected static final VoxelShape Z_AXIS_AABB = Block.box(2.0, 2.0, 0.0, 14.0, 14.0, 16.0);
     protected static final VoxelShape X_AXIS_AABB = Block.box(0.0, 2.0, 2.0, 16.0, 14.0, 14.0);
@@ -74,7 +78,7 @@ public class MotorBlock extends DirectionalKineticBlock implements IRotate, IBE<
         if (arg3.hasBlockEntity()) {
             BlockEntity entity = arg.getBlockEntity(arg2);
             if (entity instanceof MotorBlockEntity en) {
-                en.speedBehavior.value = 0;
+                en.speedBehavior.setValueRaw(0);
                 en.updateGeneratedRotation();
             }
         }
@@ -126,8 +130,8 @@ public class MotorBlock extends DirectionalKineticBlock implements IRotate, IBE<
     }
 
     @Override
-    public void neighborChanged(BlockState arg, Level arg2, BlockPos arg3, Block arg4, BlockPos arg5, boolean bl) {
-        if (arg.hasBlockEntity() && !arg2.isClientSide) {
+    public void neighborChanged(BlockState arg, Level arg2, BlockPos arg3, Block arg4, @Nullable Orientation orientation, boolean bl) {
+        if (arg.hasBlockEntity() && !arg2.isClientSide()) {
             BlockEntity entity = arg2.getBlockEntity(arg3);
             if (entity instanceof MotorBlockEntity en) {
                 en.powered = arg2.hasNeighborSignal(arg3);

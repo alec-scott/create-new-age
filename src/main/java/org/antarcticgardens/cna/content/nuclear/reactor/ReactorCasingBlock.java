@@ -11,9 +11,4 @@ public class ReactorCasingBlock extends CasingBlock {
         super(properties.strength(6.0f));
     }
 
-    @Override
-    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
-        IBE.onRemove(state, level, pos, newState);
-        super.onRemove(state, level, pos, newState, movedByPiston);
-    }
 }

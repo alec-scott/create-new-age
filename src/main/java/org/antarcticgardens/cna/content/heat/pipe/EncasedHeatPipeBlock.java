@@ -1,5 +1,7 @@
 package org.antarcticgardens.cna.content.heat.pipe;
 
+import net.minecraft.world.level.redstone.Orientation;
+
 import com.zurrtum.create.api.boiler.BoilerHeater;
 import com.zurrtum.create.content.decoration.encasing.EncasedBlock;
 import com.zurrtum.create.content.equipment.wrench.IWrenchable;
@@ -65,7 +67,7 @@ public class EncasedHeatPipeBlock extends Block implements EntityBlock, IWrencha
     }
 
     @Override
-    public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
+    protected ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state, boolean includeData) {
         return CNABlocks.HEAT_PIPE.asStack();
     }
 
@@ -88,8 +90,8 @@ public class EncasedHeatPipeBlock extends Block implements EntityBlock, IWrencha
     }
 
     @Override
-    public void neighborChanged(BlockState state, Level level, BlockPos pos, Block neighborBlock, BlockPos neighborPos, boolean movedByPiston) {
-        super.neighborChanged(state, level, pos, neighborBlock, neighborPos, movedByPiston);
+    public void neighborChanged(BlockState state, Level level, BlockPos pos, Block neighborBlock, @Nullable Orientation orientation, boolean movedByPiston) {
+        super.neighborChanged(state, level, pos, neighborBlock, orientation, movedByPiston);
         level.scheduleTick(pos, this, 1);
     }
 
@@ -104,7 +106,7 @@ public class EncasedHeatPipeBlock extends Block implements EntityBlock, IWrencha
         Level world = context.getLevel();
         BlockPos pos = context.getClickedPos();
 
-        if (world.isClientSide)
+        if (world.isClientSide())
             return InteractionResult.SUCCESS;
 
         context.getLevel().levelEvent(LevelEvent.PARTICLES_DESTROY_BLOCK, context.getClickedPos(), Block.getId(state));

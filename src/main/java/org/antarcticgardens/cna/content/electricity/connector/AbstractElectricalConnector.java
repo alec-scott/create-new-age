@@ -1,5 +1,11 @@
 package org.antarcticgardens.cna.content.electricity.connector;
 
+import org.antarcticgardens.cna.port.minecraft.CNAValueIO;
+
+import net.minecraft.world.level.storage.ValueOutput;
+
+import net.minecraft.world.level.storage.ValueInput;
+
 import com.zurrtum.create.foundation.blockEntity.SmartBlockEntity;
 import com.zurrtum.create.api.behaviour.BlockEntityBehaviour;
 import com.zurrtum.create.catnip.nbt.NBTHelper;
@@ -40,10 +46,10 @@ public abstract class AbstractElectricalConnector extends SmartBlockEntity {
     }
 
     @Override
-    public void addBehaviours(List<BlockEntityBehaviour> behaviours) {}
+    public void addBehaviours(List<BlockEntityBehaviour<?>> behaviours) {}
 
     @Override
-    protected void write(CompoundTag tag, HolderLookup.Provider registries, boolean clientPacket) {
+    protected void write(ValueOutput tag, boolean clientPacket) {
         ListTag list = new ListTag();
 
         for (Map.Entry<BlockPos, WireType> e : connectorPositions.entrySet()) {
@@ -54,31 +60,34 @@ public abstract class AbstractElectricalConnector extends SmartBlockEntity {
             list.add(compound);
         }
 
-        tag.put("connections", list);
-        super.write(tag, registries, clientPacket);
+        CNAValueIO.put(tag, "connections", list);
+        super.write(tag, clientPacket);
     }
 
     @Override
-    protected void read(CompoundTag tag, HolderLookup.Provider registries, boolean clientPacket) {
-        ListTag list = tag.getList("connections", Tag.TAG_COMPOUND);
+    protected void read(ValueInput tag, boolean clientPacket) {
+        ListTag list = CNAValueIO.getList(tag, "connections");
         connectorPositions.clear();
 
         for (Tag listTag : list.toArray(new Tag[0])) {
             if (listTag instanceof CompoundTag ct && ct.contains("position") && ct.contains("wire")) {
                 BlockPos pos = new BlockPos(NBTHelper.readVec3i((ListTag) ct.get("position")));
-                WireType wire = WireType.valueOf(ct.getString("wire"));
+                WireType wire = WireType.valueOf(ct.getStringOr("wire", ""));
 
                 connectorPositions.put(pos, wire);
             }
         }
 
         needsInstanceUpdate = true;
-        super.read(tag, registries, clientPacket);
+        super.read(tag, clientPacket);
     }
 
+    // PORT-NOTE(26.1): was ElectricalConnectorRenderer.getRenderBoundingBox (wires reach past the block)
     @Override
-    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
-        return saveWithoutMetadata(registries);
+    public net.minecraft.world.phys.AABB getRenderBoundingBox() {
+        // Wires end at connectors at most maxWireLength away (the held wire draws up to twice that, in red).
+        int range = 2 * org.antarcticgardens.cna.config.CNAConfig.getServer().maxWireLength.get() + 1;
+        return new net.minecraft.world.phys.AABB(getBlockPos()).inflate(range);
     }
 
     public Map<BlockPos, WireType> getConnectorPositions() {
@@ -119,8 +128,16 @@ public abstract class AbstractElectricalConnector extends SmartBlockEntity {
         needsInstanceUpdate = true;
     }
 
+    // PORT-NOTE(26.1): was the blocks' onRemove (block replaced by another block)
+    @Override
+    public void preRemoveSideEffects(BlockPos pos, BlockState oldState) {
+        if (level != null)
+            remove(level);
+        super.preRemoveSideEffects(pos, oldState);
+    }
+
     public void remove(Level level) {
-        if (!level.isClientSide())
+        if (!level.isClientSide() && network != null)
             network.destroy();
 
         for (Map.Entry<AbstractElectricalConnector, WireType> e : connectors.entrySet()) {

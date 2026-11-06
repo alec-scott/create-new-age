@@ -14,7 +14,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class ImplementedMagnetBlock extends Block implements IMagneticBlock {
+public class ImplementedMagnetBlock extends Block implements IMagneticBlock, org.antarcticgardens.cna.util.HoverTextBlock {
     private final int strength;
 
     public ImplementedMagnetBlock(Properties properties, int strength) {

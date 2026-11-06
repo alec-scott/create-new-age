@@ -34,7 +34,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class MotorExtensionBlock extends Block implements IBE<MotorExtensionBlockEntity>, IWrenchable {
+public class MotorExtensionBlock extends Block implements IBE<MotorExtensionBlockEntity>, IWrenchable, org.antarcticgardens.cna.util.HoverTextBlock {
     protected static final VoxelShape DOWN_AABB = Block.box(2.0, 0.0, 2.0, 14.0, 12.0, 14.0);
     protected static final VoxelShape UP_AABB = Block.box(2.0, 4.0, 2.0, 14.0, 16.0, 14.0);
     protected static final VoxelShape NORTH_AABB = Block.box(2.0, 2.0, 0.0, 14.0, 14.0, 12.0);

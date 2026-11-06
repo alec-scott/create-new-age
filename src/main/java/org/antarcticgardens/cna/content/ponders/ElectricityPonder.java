@@ -82,7 +82,7 @@ public class ElectricityPonder {
         scene.idle(120);
 
         scene.overlay().showControls(util.vector().centerOf(3, 2, 2), Pointing.DOWN, 20).rightClick()
-                .withItem(AllItems.WRENCH.asStack());
+                .withItem(new net.minecraft.world.item.ItemStack(AllItems.WRENCH));
         
         scene.idle(5);
 

@@ -1,5 +1,7 @@
 package org.antarcticgardens.cna.content.electricity.connector;
 
+import net.minecraft.world.level.redstone.Orientation;
+
 import com.mojang.serialization.MapCodec;
 import com.zurrtum.create.content.equipment.wrench.IWrenchable;
 import com.zurrtum.create.foundation.block.IBE;
@@ -40,17 +42,7 @@ public class ElectricalConnectorBlock extends DirectionalBlock implements IBE<El
         builder.add(FACING, MODE);
     }
 
-    @Override
-    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
-        if (newState.is(CNABlocks.ELECTRICAL_CONNECTOR.get()))
-            return;
-
-        if (level.getBlockEntity(pos) instanceof ElectricalConnectorBlockEntity connector) {
-            connector.remove(level);
-        }
-
-        super.onRemove(state, level, pos, newState, movedByPiston);
-    }
+    // PORT-NOTE(26.1): onRemove is gone; the connector cleans up in AbstractElectricalConnector.preRemoveSideEffects
 
     @Nullable
     @Override
@@ -79,13 +71,13 @@ public class ElectricalConnectorBlock extends DirectionalBlock implements IBE<El
     @Override
     public <S extends BlockEntity> BlockEntityTicker<S> getTicker(Level p_153212_, BlockState p_153213_, BlockEntityType<S> p_153214_) {
         return (level, blockPos, blockState, blockEntity) -> {
-            if (blockEntity instanceof ElectricalConnectorBlockEntity connector && !level.isClientSide)
+            if (blockEntity instanceof ElectricalConnectorBlockEntity connector && !level.isClientSide())
                 connector.serverTick();
         };
     }
 
     @Override
-    public void neighborChanged(BlockState state, Level level, BlockPos pos, Block neighborBlock, BlockPos neighborPos, boolean movedByPiston) {
+    public void neighborChanged(BlockState state, Level level, BlockPos pos, Block neighborBlock, @Nullable Orientation orientation, boolean movedByPiston) {
         if (level.getBlockEntity(pos) instanceof ElectricalConnectorBlockEntity connector)
             connector.neighborChanged();
     }

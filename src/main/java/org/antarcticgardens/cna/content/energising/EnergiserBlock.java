@@ -27,7 +27,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class EnergiserBlock extends HorizontalKineticBlock implements IBE<EnergiserBlockEntity> {
+public class EnergiserBlock extends HorizontalKineticBlock implements IBE<EnergiserBlockEntity>, org.antarcticgardens.cna.util.HoverTextBlock {
     private final int tier;
     
     public EnergiserBlock(Properties properties, int tier) {

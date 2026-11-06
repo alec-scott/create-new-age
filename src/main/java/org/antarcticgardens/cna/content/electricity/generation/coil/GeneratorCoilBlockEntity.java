@@ -21,7 +21,7 @@ import org.antarcticgardens.cna.util.StringFormatUtil;
 
 import java.util.List;
 
-public class GeneratorCoilBlockEntity extends KineticBlockEntity {
+public class GeneratorCoilBlockEntity extends KineticBlockEntity implements com.zurrtum.create.client.api.goggles.IHaveGoggleInformation {
     public final List<BlockPos> magnetPositions;
 
     private float lastStress = 0.0f;
@@ -72,7 +72,7 @@ public class GeneratorCoilBlockEntity extends KineticBlockEntity {
                 if (state.getBlock() instanceof IMagneticBlock magneticBlock) {
                     stress += magneticBlock.getStrength();
                 } else {
-                    for (TagKey<Block> blockTagKey : state.getTags().toList()) {
+                    for (TagKey<Block> blockTagKey : state.typeHolder().tags().toList()) {
                         if (blockTagKey.location().getNamespace().equals(CreateNewAge.MOD_ID)) {
                             String path = blockTagKey.location().getPath();
                             if (path.startsWith("magnet/force_")) { 
@@ -102,7 +102,7 @@ public class GeneratorCoilBlockEntity extends KineticBlockEntity {
 
     @Override
     public void lazyTick() {
-        if (level == null || level.isClientSide)
+        if (level == null || level.isClientSide())
             return;
         float stress = calculateStressApplied();
         var network = getOrCreateNetwork();
@@ -122,7 +122,7 @@ public class GeneratorCoilBlockEntity extends KineticBlockEntity {
         CreateLang.translate("tooltip.create_new_age.percent", StringFormatUtil.formatPercentFloat(
                 (lastStressApplied-plainStress)/lastStressApplied
         )).style(ChatFormatting.AQUA).forGoggles(tooltip, 2);
-        return super.addToGoggleTooltip(tooltip, isPlayerSneaking);
+        return true; // PORT-NOTE(26.1): kinetic stats come from the client CNAKineticTooltipBehaviour
     }
 
     public int takeGeneratedEnergy() {

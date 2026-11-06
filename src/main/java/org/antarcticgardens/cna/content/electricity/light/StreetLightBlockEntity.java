@@ -1,5 +1,9 @@
 package org.antarcticgardens.cna.content.electricity.light;
 
+import net.minecraft.world.level.storage.ValueOutput;
+
+import net.minecraft.world.level.storage.ValueInput;
+
 import com.zurrtum.create.client.api.goggles.IHaveGoggleInformation;
 import com.zurrtum.create.api.behaviour.BlockEntityBehaviour;
 import com.zurrtum.create.client.foundation.blockEntity.behaviour.ValueBoxTransform;
@@ -30,7 +34,7 @@ public class StreetLightBlockEntity extends AbstractElectricalConnector implemen
     private final SimpleNetworkEnergyStorage storage;
 
     private long prvEnergy = -100000;
-    public ScrollValueBehaviour lightLevelBehaviour;
+    public org.antarcticgardens.cna.util.RawScrollValueBehaviour lightLevelBehaviour;
 
     public StreetLightBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState blockState) {
         super(type, pos, blockState);
@@ -43,9 +47,9 @@ public class StreetLightBlockEntity extends AbstractElectricalConnector implemen
     }
 
     @Override
-    protected void read(CompoundTag tag, HolderLookup.Provider registries, boolean clientPacket) {
-        storage.setStoredEnergy(tag.getLong("energy"));
-        super.read(tag, registries, clientPacket);
+    protected void read(ValueInput tag, boolean clientPacket) {
+        storage.setStoredEnergy(tag.getLongOr("energy", 0));
+        super.read(tag, clientPacket);
     }
 
     @Override
@@ -54,17 +58,17 @@ public class StreetLightBlockEntity extends AbstractElectricalConnector implemen
     }
 
     @Override
-    protected void write(CompoundTag tag, HolderLookup.Provider registries, boolean clientPacket) {
+    protected void write(ValueOutput tag, boolean clientPacket) {
         tag.putLong("energy", storage.getStoredEnergy());
-        super.write(tag, registries, clientPacket);
+        super.write(tag, clientPacket);
     }
 
     @Override
-    public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
-        lightLevelBehaviour = new ScrollValueBehaviour(CreateLang.translateDirect("create_new_age.street_light.light_level"), this, new StreetLightBox())
-                .between(0, 15);
-        lightLevelBehaviour.value = 15;
-        lightLevelBehaviour.requiresWrench();
+    public void addBehaviours(List<BlockEntityBehaviour<?>> behaviours) {
+        // PORT-NOTE(26.1): server half; the value box (wrench only) is client/CNAMotorValueBoxes.StreetLight
+        lightLevelBehaviour = new org.antarcticgardens.cna.util.RawScrollValueBehaviour(this);
+        lightLevelBehaviour.between(0, 15);
+        lightLevelBehaviour.setValueRaw(15);
         lightLevelBehaviour.withCallback( i -> {
             if (getLevel() != null && storage.getStoredEnergy() > 0)
                 getLevel().setBlock(getBlockPos(), getBlockState().setValue(StreetLightBlock.LIGHT_LEVEL, i), 3);
@@ -104,21 +108,6 @@ public class StreetLightBlockEntity extends AbstractElectricalConnector implemen
         if (storage.getStoredEnergy() != prvEnergy && level.getGameTime() % 20 == 0) {
             this.sendData();
             prvEnergy = storage.getStoredEnergy();
-        }
-    }
-
-    static class StreetLightBox extends ValueBoxTransform.Sided {
-
-        @Override
-        protected Vec3 getSouthLocation() {
-            return VecHelper.voxelSpace(8, 9, 12.5);
-        }
-
-        @Override
-        protected boolean isSideActive(BlockState state, Direction direction) {
-            if (direction == Direction.UP || direction == Direction.DOWN)
-                return false;
-            return super.isSideActive(state, direction);
         }
     }
 

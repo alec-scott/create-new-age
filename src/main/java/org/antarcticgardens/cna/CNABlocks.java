@@ -1,7 +1,6 @@
 package org.antarcticgardens.cna;
 
 import com.zurrtum.create.AllBlocks;
-import com.simibubi.create.AllTags;
 import com.zurrtum.create.api.stress.BlockStressValues;
 import com.zurrtum.create.content.decoration.encasing.CasingBlock;
 import com.zurrtum.create.client.content.decoration.encasing.EncasedCTBehaviour;
@@ -15,7 +14,6 @@ import org.antarcticgardens.cna.port.create.foundation.data.SharedProperties;
 import org.antarcticgardens.cna.port.registrate.builders.BlockBuilder;
 import org.antarcticgardens.cna.port.registrate.util.entry.BlockEntry;
 import org.antarcticgardens.cna.port.registrate.util.nullness.NonNullUnaryOperator;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.BlockTags;
@@ -63,7 +61,6 @@ import org.antarcticgardens.cna.content.nuclear.reactor.ReactorTransparentBlock;
 import org.antarcticgardens.cna.content.nuclear.reactor.fuelacceptor.ReactorFuelAcceptorBlock;
 import org.antarcticgardens.cna.content.nuclear.reactor.rod.ReactorRodBlock;
 import org.antarcticgardens.cna.content.nuclear.reactor.vent.ReactorHeatVentBlock;
-import org.antarcticgardens.cna.data.CNABlockStateGen;
 
 import java.util.LinkedList;
 
@@ -233,7 +230,7 @@ public class CNABlocks {
 
     public static final BlockEntry<CasingBlock> HEAT_CASING =
             REGISTRATE.block("heat_casing", CasingBlock::new)
-                    .initialProperties(AllBlocks.ANDESITE_CASING::get)
+                    .initialProperties(() -> AllBlocks.ANDESITE_CASING)
                     .properties((p) -> p.requiresCorrectToolForDrops().mapColor(MapColor.COLOR_GRAY).sound(SoundType.NETHERITE_BLOCK))
                     .onRegister(CreateRegistrate.connectedTextures(() -> new EncasedCTBehaviour(CNASpriteShifts.HEAT_CASING)))
                     .onRegister(CreateRegistrate.casingConnectivity((block, cc) -> cc.makeCasing(block, CNASpriteShifts.HEAT_CASING)))
@@ -256,7 +253,7 @@ public class CNABlocks {
                     .onRegister(CreateRegistrate.connectedTextures(() -> new EncasedCTBehaviour(CNASpriteShifts.HEAT_CASING)))
                     .onRegister(CreateRegistrate.casingConnectivity((block, cc) -> cc.make(block, CNASpriteShifts.HEAT_CASING,
                             (s, f) -> !s.getValue(EncasedHeatPipeBlock.getDirectionProperty(f)))))
-                    .transform(EncasingRegistry.addVariantTo(HEAT_PIPE))
+                    .onRegister(block -> doLater.add(() -> EncasingRegistry.addVariant(HEAT_PIPE.get(), block)))
                     .register();
 
     public static final BlockEntry<HeatPumpBlock> HEAT_PUMP =
@@ -318,7 +315,7 @@ public class CNABlocks {
                     .onRegister(CreateRegistrate.connectedTextures(() -> new EncasedCTBehaviour(CNASpriteShifts.REACTOR_CASING)))
                     .onRegister(CreateRegistrate.casingConnectivity((block, cc) -> cc.make(block, CNASpriteShifts.REACTOR_CASING,
                             (s, f) -> !s.getValue(EncasedHeatPipeBlock.getDirectionProperty(f)))))
-                    .transform(EncasingRegistry.addVariantTo(HEAT_PIPE))
+                    .onRegister(block -> doLater.add(() -> EncasingRegistry.addVariant(HEAT_PIPE.get(), block)))
                     .register();
 
     public static final BlockEntry<ReactorRodBlock> REACTOR_ROD =

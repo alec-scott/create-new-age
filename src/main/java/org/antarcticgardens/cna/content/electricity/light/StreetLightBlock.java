@@ -1,5 +1,9 @@
 package org.antarcticgardens.cna.content.electricity.light;
 
+import org.jetbrains.annotations.Nullable;
+
+import net.minecraft.world.level.redstone.Orientation;
+
 import com.zurrtum.create.content.equipment.wrench.IWrenchable;
 import com.zurrtum.create.foundation.block.IBE;
 import com.zurrtum.create.client.foundation.utility.CreateLang;
@@ -30,7 +34,7 @@ import org.antarcticgardens.cna.util.StringFormatUtil;
 
 import java.util.List;
 
-public class StreetLightBlock extends Block implements IBE<StreetLightBlockEntity>, IWrenchable {
+public class StreetLightBlock extends Block implements IBE<StreetLightBlockEntity>, IWrenchable, org.antarcticgardens.cna.util.HoverTextBlock {
 
     public static final IntegerProperty LIGHT_LEVEL = IntegerProperty.create("light_level", 0, 15);
 
@@ -42,7 +46,7 @@ public class StreetLightBlock extends Block implements IBE<StreetLightBlockEntit
     @Override
     public <S extends BlockEntity> BlockEntityTicker<S> getTicker(Level p_153212_, BlockState p_153213_, BlockEntityType<S> p_153214_) {
         return (level, blockPos, blockState, blockEntity) -> {
-            if (blockEntity instanceof StreetLightBlockEntity streetLightBlock && !level.isClientSide)
+            if (blockEntity instanceof StreetLightBlockEntity streetLightBlock && !level.isClientSide())
                 streetLightBlock.serverTick();
         };
     }
@@ -84,20 +88,10 @@ public class StreetLightBlock extends Block implements IBE<StreetLightBlockEntit
                 StringFormatUtil.formatLong(CNAConfig.getServer().streetLightCapacity.get())).style(ChatFormatting.AQUA).component());
     }
 
-    @Override
-    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
-        if (newState.is(CNABlocks.STREET_LIGHT.get()))
-            return;
-
-        if (level.getBlockEntity(pos) instanceof StreetLightBlockEntity connector) {
-            connector.remove(level);
-        }
-
-        super.onRemove(state, level, pos, newState, movedByPiston);
-    }
+    // PORT-NOTE(26.1): onRemove is gone; the connector cleans up in AbstractElectricalConnector.preRemoveSideEffects
 
     @Override
-    public void neighborChanged(BlockState state, Level level, BlockPos pos, Block neighborBlock, BlockPos neighborPos, boolean movedByPiston) {
+    public void neighborChanged(BlockState state, Level level, BlockPos pos, Block neighborBlock, @Nullable Orientation orientation, boolean movedByPiston) {
         if (level.getBlockEntity(pos) instanceof StreetLightBlockEntity connector)
             connector.neighborChanged();
     }
