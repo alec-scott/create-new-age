@@ -145,6 +145,8 @@ export JAVA_HOME=/c/Users/akrsc/AppData/Roaming/PrismLauncher/java/java-runtime-
 - JEI ported, custom tickers wrapped, ESL registrations moved to init (`c91b73f`): **`compileJava` and
   `./gradlew build -x test` succeed with all compat compiled.** Ponder: all 8 `.nbt` scene names match the storyboard
   ids; Create Fly loads them without data fixing (check in game). Not yet run: dedicated server, client.
+- **Dedicated server boots clean** (Create Fly, Steam 'n' Rails, D&D, Copycats+, CC&A, New Age): no errors; all 39
+  blocks placed with `setblock` and ticked ~20 s with no errors; `/reload` clean. CC&A JEI sync fixed there (`a091cbe5`).
 
 ## TODO
 
@@ -153,7 +155,7 @@ export JAVA_HOME=/c/Users/akrsc/AppData/Roaming/PrismLauncher/java/java-runtime-
 - [x] Compile clean (block/BE APIs, renderers to extract/submit; no mixins to retarget). Build produces a jar.
 - [x] Resources: item definitions, recipe/data conversion (resources agent, `30492b6`).
 - [x] Compat: CC:Tweaked, JEI (no AE2 code upstream).
-- [ ] Dedicated server boot (`../../railways-test-server`): check that client-package classes referenced from common
+- [x] Dedicated server boot (`../../railways-test-server`): check that client-package classes referenced from common
       block entities (`IHaveGoggleInformation`, `CreateLang` inside goggle/hover methods) do not load; ESL invoker
       mixin applies; energising recipes parse; `create:config_filter` placed features; built-in pack shows up.
 - [ ] Client test (user launches the game): wires render (geometry, light, texture orientation in `entityCutout`),
@@ -169,7 +171,7 @@ export JAVA_HOME=/c/Users/akrsc/AppData/Roaming/PrismLauncher/java/java-runtime-
 - [ ] Config screen: add Mod Menu integration (catnip `BaseConfigScreen`) if wanted.
 - [ ] JEI: energising step renderer has no shaft animation; check offsets in game. JEI recipe sync: CC&A's
       `CreateAdditionJEI` reads `Internal.getClientSyncedRecipes()` but never calls `RecipeSynchronization`, so its
-      categories may be empty (check there too).
+      categories may be empty (fixed in CC&A `a091cbe5`).
 - [ ] Energiser belt processing: recipe lookup is server only (client returns PASS); check the item visually holds.
 - [ ] ESL caches (`E2F/F2EEnergyStorageAdapter`) are `WeakHashMap`s whose values reference their keys (upstream
       behaviour, entries never clear).
