@@ -6,8 +6,6 @@ import net.minecraft.world.level.storage.ValueInput;
 
 import com.zurrtum.create.client.api.goggles.IHaveGoggleInformation;
 import com.zurrtum.create.api.behaviour.BlockEntityBehaviour;
-import com.zurrtum.create.client.foundation.blockEntity.behaviour.ValueBoxTransform;
-import com.zurrtum.create.client.foundation.blockEntity.behaviour.scrollValue.ScrollValueBehaviour;
 import com.zurrtum.create.client.foundation.utility.CreateLang;
 import com.zurrtum.create.catnip.math.VecHelper;
 import net.minecraft.ChatFormatting;
@@ -43,7 +41,6 @@ public class StreetLightBlockEntity extends AbstractElectricalConnector implemen
                 .onFinalCommit(RunnableUtil.createBlockEntityUpdater(this))
                 .setSupportsExtraction(false);
 
-        EnergyStorage.registerForBlockEntity((blockEntity, direction) -> blockEntity.storage, CNABlockEntityTypes.STREET_LIGHT.get());
     }
 
     @Override
@@ -119,5 +116,11 @@ public class StreetLightBlockEntity extends AbstractElectricalConnector implemen
 
     public Vec3 getConnectionPoint() {
         return new Vec3(0.5f, 1/16f, 0.5f);
+    }
+
+    // PORT-NOTE(26.1): was in the constructor (ESL ignored repeats); on Fabric this registers TR Energy lookups, so
+    // it runs once at init (CreateNewAge) instead of from both the server and client threads.
+    public static void registerEnergyStorage() {
+        EnergyStorage.registerForBlockEntity((blockEntity, direction) -> blockEntity.storage, CNABlockEntityTypes.STREET_LIGHT.get());
     }
 }

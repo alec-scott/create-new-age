@@ -45,3 +45,4 @@ replay_*.log
 **/generated/resources/.cache/
 build.txt
 errs.txt
+buildfull.txt

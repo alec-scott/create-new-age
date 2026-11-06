@@ -47,7 +47,6 @@ public class EnergiserBlockEntity extends KineticBlockEntity implements com.zurr
         storage = new SimpleEnergyStorage(EnergiserBlock.getCapacity(tier))
                 .onFinalCommit(RunnableUtil.createBlockEntityUpdater(this));
         
-        EnergyStorage.registerForBlockEntity((blockEntity, direction) -> blockEntity.storage, CNABlockEntityTypes.ENERGISER.get());
         
         this.energisingBehaviour.tier = tier;
     }
@@ -122,4 +121,10 @@ public class EnergiserBlockEntity extends KineticBlockEntity implements com.zurr
         return impact;
     }
 
+
+    // PORT-NOTE(26.1): was in the constructor (ESL ignored repeats); on Fabric this registers TR Energy lookups, so
+    // it runs once at init (CreateNewAge) instead of from both the server and client threads.
+    public static void registerEnergyStorage() {
+        EnergyStorage.registerForBlockEntity((blockEntity, direction) -> blockEntity.storage, CNABlockEntityTypes.ENERGISER.get());
+    }
 }

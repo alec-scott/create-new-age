@@ -12,10 +12,8 @@ import com.zurrtum.create.content.kinetics.base.GeneratingKineticBlockEntity;
 import com.zurrtum.create.content.kinetics.base.IRotate;
 import com.zurrtum.create.content.kinetics.motor.CreativeMotorBlock;
 import com.zurrtum.create.api.behaviour.BlockEntityBehaviour;
-import com.zurrtum.create.client.foundation.blockEntity.behaviour.ValueBoxTransform;
 import com.zurrtum.create.client.foundation.utility.CreateLang;
 import org.antarcticgardens.cna.port.registrate.builders.BlockEntityBuilder;
-import com.zurrtum.create.client.flywheel.lib.transform.TransformStack;
 import com.zurrtum.create.catnip.math.AngleHelper;
 import com.zurrtum.create.catnip.math.VecHelper;
 import net.minecraft.ChatFormatting;
@@ -72,9 +70,6 @@ public class MotorBlockEntity extends GeneratingKineticBlockEntity implements IH
                 .onFinalCommit(RunnableUtil.createBlockEntityUpdater(this))
                 .setSupportsExtraction(false);
 
-        EnergyStorage.registerForBlockEntity((blockEntity, direction) -> blockEntity.storage, CNABlockEntityTypes.BASIC_MOTOR.get());
-        EnergyStorage.registerForBlockEntity((blockEntity, direction) -> blockEntity.storage, CNABlockEntityTypes.ADVANCED_MOTOR.get());
-        EnergyStorage.registerForBlockEntity((blockEntity, direction) -> blockEntity.storage, CNABlockEntityTypes.REINFORCED_MOTOR.get());
     }
 
     public static BlockEntityBuilder.BlockEntityFactory<MotorBlockEntity> create(IMotorVariant variant) {
@@ -251,5 +246,13 @@ public class MotorBlockEntity extends GeneratingKineticBlockEntity implements IH
                 prvEnergy = storage.getStoredEnergy();
             }
         }
+    }
+
+    // PORT-NOTE(26.1): was in the constructor (ESL ignored repeats); on Fabric this registers TR Energy lookups, so
+    // it runs once at init (CreateNewAge) instead of from both the server and client threads.
+    public static void registerEnergyStorage() {
+        EnergyStorage.registerForBlockEntity((blockEntity, direction) -> blockEntity.storage, CNABlockEntityTypes.BASIC_MOTOR.get());
+        EnergyStorage.registerForBlockEntity((blockEntity, direction) -> blockEntity.storage, CNABlockEntityTypes.ADVANCED_MOTOR.get());
+        EnergyStorage.registerForBlockEntity((blockEntity, direction) -> blockEntity.storage, CNABlockEntityTypes.REINFORCED_MOTOR.get());
     }
 }

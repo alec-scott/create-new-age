@@ -42,7 +42,6 @@ public class CarbonBrushesBlockEntity extends KineticBlockEntity implements IHav
         storage = new SimpleEnergyStorage(0)
                 .setSupportsInsertion(false);
 
-        EnergyStorage.registerForBlockEntity((blockEntity, direction) -> blockEntity.storage, CNABlockEntityTypes.CARBON_BRUSHES.get());
 
         setLazyTickRate(20);
     }
@@ -134,5 +133,11 @@ public class CarbonBrushesBlockEntity extends KineticBlockEntity implements IHav
             return processCoil(pos, dir, left - 1);
         }
         return left;
+    }
+
+    // PORT-NOTE(26.1): was in the constructor (ESL ignored repeats); on Fabric this registers TR Energy lookups, so
+    // it runs once at init (CreateNewAge) instead of from both the server and client threads.
+    public static void registerEnergyStorage() {
+        EnergyStorage.registerForBlockEntity((blockEntity, direction) -> blockEntity.storage, CNABlockEntityTypes.CARBON_BRUSHES.get());
     }
 }

@@ -111,7 +111,8 @@ public class ReactorRodBlock extends ReactorBlock implements EntityBlock {
         return 1.0F;
     }
 
-    public boolean propagatesSkylightDown(BlockState state, BlockGetter level, BlockPos pos) {
+    @Override
+    protected boolean propagatesSkylightDown(BlockState state) {
         return true;
     }
 
@@ -122,8 +123,13 @@ public class ReactorRodBlock extends ReactorBlock implements EntityBlock {
     }
 
     @Nullable
+    // PORT-NOTE(26.1): wrapped so SmartBlockEntity.tick runs (see SmartTicker)
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level level, @NotNull BlockState state, @NotNull BlockEntityType<T> blockEntityType) {
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level cnaLevel, BlockState cnaState, BlockEntityType<T> cnaType) {
+        return org.antarcticgardens.cna.util.SmartTicker.wrap(getCnaTicker(cnaLevel, cnaState, cnaType));
+    }
+
+    public <T extends BlockEntity> BlockEntityTicker<T> getCnaTicker(@NotNull Level level, @NotNull BlockState state, @NotNull BlockEntityType<T> blockEntityType) {
         return (level1, blockPos, blockState, blockEntity) -> {
             if (!(blockEntity instanceof ReactorRodBlockEntity ent)) return;
             ent.tick(blockPos, level1, blockState);

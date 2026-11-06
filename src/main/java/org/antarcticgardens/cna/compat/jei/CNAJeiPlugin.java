@@ -1,66 +1,58 @@
 package org.antarcticgardens.cna.compat.jei;
 
-import com.simibubi.create.compat.jei.category.CreateRecipeCategory;
+import com.zurrtum.create.client.compat.jei.category.SequencedAssemblyCategory;
 import mezz.jei.api.IModPlugin;
-import mezz.jei.api.JeiPlugin;
+import mezz.jei.api.recipe.types.IRecipeType;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
+import mezz.jei.common.Internal;
 import net.minecraft.resources.Identifier;
-import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeInput;
+import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.RecipeMap;
+import org.antarcticgardens.cna.CNABlocks;
 import org.antarcticgardens.cna.CNARecipeTypes;
 import org.antarcticgardens.cna.CreateNewAge;
-import org.antarcticgardens.cna.CNABlocks;
 import org.antarcticgardens.cna.content.energising.recipe.EnergisingRecipe;
 
-
-@JeiPlugin
+/**
+ * PORT-NOTE(26.1): registered through the {@code jei_mod_plugin} entrypoint in fabric.mod.json (was {@code @JeiPlugin}),
+ * so the mod runs without JEI. Categories follow Create Fly's JeiClientPlugin (and CC&A's CreateAdditionJEI): they work
+ * on {@link RecipeHolder}s. The energising sequenced-assembly step is a Create Fly SequencedRenderer (was a
+ * SequencedAssemblySubCategory chosen through the platform layer). Energising recipes reach the client through Fabric's
+ * recipe synchronization ({@link CNARecipeTypes#register()}).
+ */
 public class CNAJeiPlugin implements IModPlugin {
-    public static CreateRecipeCategory<?> energisingType;
+    private static final Identifier ID = CreateNewAge.asResource("jei_plugin");
+
+    public static final IRecipeType<RecipeHolder<EnergisingRecipe>> ENERGISING = createRecipeHolderType("energising");
+
+    @SuppressWarnings("unchecked")
+    private static <T> IRecipeType<T> createRecipeHolderType(String path) {
+        return (IRecipeType<T>) IRecipeType.create(CreateNewAge.asResource(path), RecipeHolder.class);
+    }
 
     @Override
     public Identifier getPluginUid() {
-        return Identifier.fromNamespaceAndPath(CreateNewAge.MOD_ID, "jei_plugin");
+        return ID;
     }
 
     @Override
     public void registerCategories(IRecipeCategoryRegistration registration) {
-        energisingType = builder(EnergisingRecipe.class)
-                .addTypedRecipes(CNARecipeTypes.ENERGISING)
-                .catalyst(CNABlocks.BASIC_ENERGISER::get)
-                .catalyst(CNABlocks.ADVANCED_ENERGISER::get)
-                .catalyst(CNABlocks.REINFORCED_ENERGISER::get)
-                .itemIcon(CNABlocks.BASIC_ENERGISER.get())
-                .build(Identifier.fromNamespaceAndPath(CreateNewAge.MOD_ID, "energising"), EnergisingJeiCategory::new);
-        registration.addRecipeCategories(
-                energisingType
-        );
+        registration.addRecipeCategories(new EnergisingCategory());
+        SequencedAssemblyCategory.registerRenderer(CNARecipeTypes.ENERGISING, new EnergisingAssemblyRenderer());
     }
 
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
-        energisingType.registerRecipes(registration);
+        RecipeMap recipes = Internal.getClientSyncedRecipes();
+        registration.addRecipes(ENERGISING, recipes.byType(CNARecipeTypes.ENERGISING).stream().toList());
     }
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
-        energisingType.registerCatalysts(registration);
-    }
-
-    private <T extends Recipe<? extends RecipeInput>> CategoryBuilder<T> builder(Class<T> recipeClass) {
-        return new CategoryBuilder<>(recipeClass);
-    }
-
-    private class CategoryBuilder<T extends Recipe<?>> extends CreateRecipeCategory.Builder<T> {
-        public CategoryBuilder(Class<? extends T> recipeClass) {
-            super(recipeClass);
-        }
-
-        @Override
-        public CreateRecipeCategory<T> build(Identifier id, CreateRecipeCategory.Factory<T> factory) {
-            CreateRecipeCategory<T> category = super.build(id, factory);
-            return category;
-        }
+        registration.addCraftingStation(ENERGISING, CNABlocks.BASIC_ENERGISER.get());
+        registration.addCraftingStation(ENERGISING, CNABlocks.ADVANCED_ENERGISER.get());
+        registration.addCraftingStation(ENERGISING, CNABlocks.REINFORCED_ENERGISER.get());
     }
 }

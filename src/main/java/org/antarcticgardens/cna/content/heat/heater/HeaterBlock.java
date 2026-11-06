@@ -37,8 +37,13 @@ public class HeaterBlock extends Block implements EntityBlock, IWrenchable {
     }
 
     @Nullable
+    // PORT-NOTE(26.1): wrapped so SmartBlockEntity.tick runs (see SmartTicker)
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level cnaLevel, BlockState cnaState, BlockEntityType<T> cnaType) {
+        return org.antarcticgardens.cna.util.SmartTicker.wrap(getCnaTicker(cnaLevel, cnaState, cnaType));
+    }
+
+    public <T extends BlockEntity> BlockEntityTicker<T> getCnaTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
         return (world, blockPos, blockState, sel) -> {
             if (world.getGameTime() % 20 != 0 || !(sel instanceof HeaterBlockEntity self) || self.getLevel() == null) return;
             HeatBlockEntity.transferAround(self);

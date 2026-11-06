@@ -27,7 +27,8 @@ public class ReactorTransparentBlock extends ReactorBlock {
         return 1.0F;
     }
 
-    public boolean propagatesSkylightDown(BlockState state, BlockGetter level, BlockPos pos) {
+    @Override
+    protected boolean propagatesSkylightDown(BlockState state) {
         return true;
     }
 

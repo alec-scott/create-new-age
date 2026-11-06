@@ -31,7 +31,6 @@ sourceSets {
         java {
             // Datagen is not ported (the committed src/generated/resources are used); see PORTING-26.1.md.
             exclude 'org/antarcticgardens/cna/data/**'
-            exclude 'org/antarcticgardens/cna/compat/jei/**', 'org/antarcticgardens/cna/compat/RecipeViewerEnergiserRenderer.java', 'org/antarcticgardens/cna/compat/RenderingUtil.java'
         }
     }
 }

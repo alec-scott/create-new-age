@@ -40,8 +40,13 @@ public class ReactorHeatVentBlock extends ReactorBlock implements EntityBlock {
     }
 
     @Nullable
+    // PORT-NOTE(26.1): wrapped so SmartBlockEntity.tick runs (see SmartTicker)
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level level, @NotNull BlockState state, @NotNull BlockEntityType<T> blockEntityType) {
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level cnaLevel, BlockState cnaState, BlockEntityType<T> cnaType) {
+        return org.antarcticgardens.cna.util.SmartTicker.wrap(getCnaTicker(cnaLevel, cnaState, cnaType));
+    }
+
+    public <T extends BlockEntity> BlockEntityTicker<T> getCnaTicker(@NotNull Level level, @NotNull BlockState state, @NotNull BlockEntityType<T> blockEntityType) {
         return (level1, blockPos, blockState, blockEntity) -> {
             if (!(blockEntity instanceof ReactorHeatVentBlockEntity ent)) return;
             ent.tick(blockPos, level1, blockState);

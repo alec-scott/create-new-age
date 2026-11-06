@@ -123,8 +123,13 @@ public class EncasedHeatPipeBlock extends Block implements EntityBlock, IWrencha
 
     public static int massPipe = 0;
     @Nullable
+    // PORT-NOTE(26.1): wrapped so SmartBlockEntity.tick runs (see SmartTicker)
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level cnaLevel, BlockState cnaState, BlockEntityType<T> cnaType) {
+        return org.antarcticgardens.cna.util.SmartTicker.wrap(getCnaTicker(cnaLevel, cnaState, cnaType));
+    }
+
+    public <T extends BlockEntity> BlockEntityTicker<T> getCnaTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
         final int on = massPipe;
         massPipe++;
         if (massPipe >= 20) {

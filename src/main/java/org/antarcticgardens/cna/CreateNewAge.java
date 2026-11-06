@@ -84,6 +84,12 @@ public class CreateNewAge implements ModInitializer {
 
         magnetPlacementHelperId = PlacementHelpers.register(new MagnetPlacementHelper());
 
+        // Energy (ESL -> TR Energy EnergyStorage.SIDED); was a NeoForge RegisterCapabilitiesEvent handler
+        org.antarcticgardens.cna.content.motor.MotorBlockEntity.registerEnergyStorage();
+        org.antarcticgardens.cna.content.electricity.connector.ElectricalConnectorBlockEntity.registerEnergyStorage();
+        org.antarcticgardens.cna.content.electricity.generation.brushes.CarbonBrushesBlockEntity.registerEnergyStorage();
+        org.antarcticgardens.cna.content.energising.EnergiserBlockEntity.registerEnergyStorage();
+        org.antarcticgardens.cna.content.electricity.light.StreetLightBlockEntity.registerEnergyStorage();
         org.antarcticgardens.cna.content.nuclear.reactor.fuelacceptor.ReactorFuelAcceptorBlockEntity.registerItemStorage();
         CNAComputerCraftProxy.register();
 

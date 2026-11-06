@@ -56,7 +56,10 @@ public record EnergisingRecipe(List<ProcessingOutput> results, Ingredient ingred
     }
 
     public static Component getDescriptionForAssembly(DynamicOps<JsonElement> ops, JsonObject json) {
-        return Component.translatable("recipe.assembly.energising");
+        // The energy needed was drawn by the JEI sub-category upstream; Create Fly steps only have a name, so it goes here
+        long energy = json.has("energy_needed") ? json.get("energy_needed").getAsLong() : 0;
+        return Component.translatable("recipe.assembly.energising")
+                .append(" (" + org.antarcticgardens.cna.util.StringFormatUtil.formatLong(energy) + " ⚡)");
     }
 
     @Override
