@@ -33,8 +33,7 @@ public class CNARecipeTypes {
 
     public static void register() {
         AllAssemblyRecipeNames.register(ENERGISING, EnergisingRecipe::getDescriptionForAssembly);
-        // Recipe viewers read client-synced recipes (as Create Fly's RecipeCommonPlugin does for its own types)
-        if (net.fabricmc.loader.api.FabricLoader.getInstance().isModLoaded("jei"))
-            net.fabricmc.fabric.api.recipe.v1.sync.RecipeSynchronization.synchronizeRecipeSerializer(ENERGISING_SERIALIZER);
+        // Always synced, so a dedicated server doesn't need JEI installed for its clients to see these in JEI
+        net.fabricmc.fabric.api.recipe.v1.sync.RecipeSynchronization.synchronizeRecipeSerializer(ENERGISING_SERIALIZER);
     }
 }

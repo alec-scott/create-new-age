@@ -175,3 +175,6 @@ export JAVA_HOME=/c/Users/akrsc/AppData/Roaming/PrismLauncher/java/java-runtime-
 - [ ] Energiser belt processing: recipe lookup is server only (client returns PASS); check the item visually holds.
 - [ ] ESL caches (`E2F/F2EEnergyStorageAdapter`) are `WeakHashMap`s whose values reference their keys (upstream
       behaviour, entries never clear).
+
+## Recipe sync (2026-11-07)
+The energising serializer is now always synced instead of only when JEI is loaded, so JEI shows it on clients of a server without JEI. Checked by joining a JEI-less test server.
