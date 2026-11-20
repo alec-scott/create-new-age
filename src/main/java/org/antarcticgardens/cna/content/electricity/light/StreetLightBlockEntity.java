@@ -37,7 +37,7 @@ public class StreetLightBlockEntity extends AbstractElectricalConnector implemen
     public StreetLightBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState blockState) {
         super(type, pos, blockState);
 
-        storage = new SimpleNetworkEnergyStorage(this, null, CNAConfig.getServer().streetLightCapacity.get())
+        storage = new SimpleNetworkEnergyStorage(this, null, CNAConfig.server(cfg -> cfg.streetLightCapacity))
                 .onFinalCommit(RunnableUtil.createBlockEntityUpdater(this))
                 .setSupportsExtraction(false);
 
@@ -93,7 +93,7 @@ public class StreetLightBlockEntity extends AbstractElectricalConnector implemen
         super.serverTick();
         if (getLevel() == null)
             return;
-        long needed = (long) lightLevelBehaviour.getValue() * CNAConfig.getServer().streetLightLevelExtraction.get();
+        long needed = (long) lightLevelBehaviour.getValue() * CNAConfig.server(cfg -> cfg.streetLightLevelExtraction);
         long e = storage.internalExtract(needed, false);
         if (prvEnergy == storage.getStoredEnergy())
             return;

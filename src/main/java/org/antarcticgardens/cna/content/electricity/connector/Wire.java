@@ -42,7 +42,7 @@ public class Wire {
     }
 
     private float catenary(double x, double length, int sections) {
-        double a = length / CNAConfig.getServer().maxWireLength.get() * SAG_FACTOR;
+        double a = length / CNAConfig.server(cfg -> cfg.maxWireLength) * SAG_FACTOR;
         x = (x / sections * 2 - 1);
         return (float) ((Math.cosh(x) - Math.cosh(1.0f)) * a);
     }

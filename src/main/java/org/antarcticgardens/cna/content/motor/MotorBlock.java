@@ -55,7 +55,7 @@ public class MotorBlock extends DirectionalKineticBlock implements IRotate, IBE<
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         tooltipComponents.add(CreateLang.translate("tooltip.create_new_age.generates").style(ChatFormatting.GRAY)
                 .component());
-        tooltipComponents.add(CreateLang.text(" ").add(CreateLang.number(variant.getStress() * CNAConfig.getServer().motorSUMultiplier.get()).text(" ")
+        tooltipComponents.add(CreateLang.text(" ").add(CreateLang.number(variant.getStress() * CNAConfig.server(cfg -> cfg.motorSUMultiplier)).text(" ")
                 .translate("generic.unit.stress").style(ChatFormatting.AQUA)).component());
 
         tooltipComponents.add(CreateLang.translate("tooltip.create_new_age.stores").style(ChatFormatting.GRAY)

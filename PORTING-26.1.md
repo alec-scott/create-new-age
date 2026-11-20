@@ -178,3 +178,12 @@ export JAVA_HOME=/c/Users/akrsc/AppData/Roaming/PrismLauncher/java/java-runtime-
 
 ## Recipe sync (2026-11-07)
 The energising serializer is now always synced instead of only when JEI is loaded, so JEI shows it on clients of a server without JEI. Checked by joining a JEI-less test server.
+
+## Client crash: server config not loaded (2026-11-20)
+A client on the dedicated server crashed in `ElectricalConnectorRenderer.mesh` with "Cannot get config value before
+config is loaded" (reading `maxWireLength`, a SERVER config value). Several server values are also read on the client
+(wire rendering and sag, the connector render box, `ElectricWireItem.useOn`, motor/street light/heater/solar tooltips).
+They are only available on a client once Forge Config API Port has synced the server config. Every
+`getServer().x.get()` now goes through `CNAConfig.server(cfg -> cfg.x)`, which returns the default value while the
+server spec is not loaded. Server behaviour is unchanged. The exact reason the synced copy was missing in that session
+is not known.

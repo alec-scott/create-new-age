@@ -144,7 +144,7 @@ public class EncasedHeatPipeBlock extends Block implements EntityBlock, IWrencha
 
             selfC.generating = 0;
 
-            double loss =  CNAConfig.getServer().passivePipeHeatLoss.get();
+            double loss =  CNAConfig.server(cfg -> cfg.passivePipeHeatLoss);
 
             selfC.heat = (float) Math.max(0, selfC.heat - loss);
 

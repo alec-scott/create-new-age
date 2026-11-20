@@ -47,7 +47,7 @@ public class HeaterBlock extends Block implements EntityBlock, IWrenchable {
         return (world, blockPos, blockState, sel) -> {
             if (world.getGameTime() % 20 != 0 || !(sel instanceof HeaterBlockEntity self) || self.getLevel() == null) return;
             HeatBlockEntity.transferAround(self);
-            Double mult = CNAConfig.getServer().heaterRequiredHeatMultiplier.get();
+            Double mult = CNAConfig.server(cfg -> cfg.heaterRequiredHeatMultiplier);
             HeatBlockEntity.handleOverheat(self);
             if (self.heat > 500 * mult) {
                 self.heat -= (float) (500 * mult);

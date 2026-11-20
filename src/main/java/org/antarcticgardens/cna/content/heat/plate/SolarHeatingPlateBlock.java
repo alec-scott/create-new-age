@@ -71,6 +71,6 @@ public class SolarHeatingPlateBlock extends Block implements EntityBlock, IWrenc
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         tooltipComponents.add(CreateLang.translate("tooltip.create_new_age.generates").style(ChatFormatting.GRAY)
                 .component());
-        tooltipComponents.add(CreateLang.text(" ").translate("tooltip.create_new_age.temperature.ps", strength * CNAConfig.getServer().solarPanelHeatMultiplier.get()).style(ChatFormatting.AQUA).component());
+        tooltipComponents.add(CreateLang.text(" ").translate("tooltip.create_new_age.temperature.ps", strength * CNAConfig.server(cfg -> cfg.solarPanelHeatMultiplier)).style(ChatFormatting.AQUA).component());
     }
 }

@@ -29,7 +29,7 @@ public abstract class RodFindingReactorBlockEntity extends SmartBlockEntity {
         int c = 0;
         while (entity instanceof ReactorRodBlockEntity rrbe) {
             c++;
-            if (c > CNAConfig.getServer().maxRodsInDirection.get()) {
+            if (c > CNAConfig.server(cfg -> cfg.maxRodsInDirection)) {
                 return;
             }
             list.add(rrbe);

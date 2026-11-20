@@ -224,14 +224,14 @@ public class MotorBlockEntity extends GeneratingKineticBlockEntity implements IH
 
         if (!level.isClientSide()) {
             int needed = (int) Math.ceil((variant.getStress() * stressMultiplier
-                        * CNAConfig.getServer().motorSUMultiplier.get())
-                    * CNAConfig.getServer().suToEnergy.get());
+                        * CNAConfig.server(cfg -> cfg.motorSUMultiplier))
+                    * CNAConfig.server(cfg -> cfg.suToEnergy));
             e = needsPower == powered ? storage.internalExtract(needed, false) : 0;
             if (e > 0) {
                 actualSpeed = speedBehavior.getValue();
                 actualStress =
                         (float) Math.ceil((variant.getStress() * stressMultiplier
-                                    * CNAConfig.getServer().motorSUMultiplier.get())
+                                    * CNAConfig.server(cfg -> cfg.motorSUMultiplier))
                                 * (e / (float)needed));
             } else {
                 actualSpeed = 0;

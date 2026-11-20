@@ -105,7 +105,7 @@ public class SolarHeatingPlateBlockEntity extends SmartBlockEntity implements He
 
 
     public void tick(BlockPos blockPos, Level world, BlockState blockState) {
-        double generationMultiplier = CNAConfig.getServer().solarPanelHeatMultiplier.get();
+        double generationMultiplier = CNAConfig.server(cfg -> cfg.solarPanelHeatMultiplier);
 
         // PORT-NOTE(26.1): Level.getTimeOfDay is gone (world clocks); the client-side estimate is replaced by the
         // sky darkness on both sides. Only affects the client copy of the generation value (goggles).

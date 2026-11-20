@@ -86,7 +86,7 @@ public abstract class AbstractElectricalConnector extends SmartBlockEntity {
     @Override
     public net.minecraft.world.phys.AABB getRenderBoundingBox() {
         // Wires end at connectors at most maxWireLength away (the held wire draws up to twice that, in red).
-        int range = 2 * org.antarcticgardens.cna.config.CNAConfig.getServer().maxWireLength.get() + 1;
+        int range = 2 * org.antarcticgardens.cna.config.CNAConfig.server(cfg -> cfg.maxWireLength) + 1;
         return new net.minecraft.world.phys.AABB(getBlockPos()).inflate(range);
     }
 

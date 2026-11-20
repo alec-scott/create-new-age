@@ -56,9 +56,9 @@ public class ReactorRodBlockEntity extends SmartBlockEntity implements HeatBlock
         if (multiplier > 0 && this.heat > 16000*multiplier) {
             last-= common.nuclearReactorRodHeatLoss.get();
             setChanged();
-            float explosionRadius = CNAConfig.getServer().radiationDamageExplosionScale.get().floatValue() * CNAConfig.getServer().reactorOverheatExplosionMultiplier.get().floatValue();
+            float explosionRadius = CNAConfig.server(cfg -> cfg.radiationDamageExplosionScale).floatValue() * CNAConfig.server(cfg -> cfg.reactorOverheatExplosionMultiplier).floatValue();
             HeatBlockEntity.handleOverheat(this, () -> ((ReactorRodBlock) state.getBlock()).explode(level, pos, state, explosionRadius,
-                    CNAConfig.getServer().radiationDamageExplosionFire.get() && CNAConfig.getServer().reactorOverheatExplosionMultiplier.get().floatValue() > 0));
+                    CNAConfig.server(cfg -> cfg.radiationDamageExplosionFire) && CNAConfig.server(cfg -> cfg.reactorOverheatExplosionMultiplier).floatValue() > 0));
         }
         twoSeconds++;
         if (twoSeconds > 40) {

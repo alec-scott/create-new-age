@@ -51,7 +51,7 @@ public interface HeatBlockEntity {
 
     static <T extends  BlockEntity & HeatBlockEntity> void addToolTips(T self, List<Component> tooltip) {
         LangBuilder builder = CreateLang.translate("tooltip.create_new_age.temperature", StringFormatUtil.formatFloat(self.getHeat()));
-        float max = self.maxHeat() * CNAConfig.getServer().overheatingMultiplier.get().floatValue();
+        float max = self.maxHeat() * CNAConfig.server(cfg -> cfg.overheatingMultiplier).floatValue();
         if (max < 0) {
             builder.style(ChatFormatting.AQUA);
         } else if (self.getHeat() >= max) {
@@ -104,8 +104,8 @@ public interface HeatBlockEntity {
             return;
         }
 
-        double multiplier = CNAConfig.getServer().overheatingMultiplier.get();
-        if (multiplier > 0 && self.getHeat() > self.maxHeat() * CNAConfig.getServer().overheatingMultiplier.get()) {
+        double multiplier = CNAConfig.server(cfg -> cfg.overheatingMultiplier);
+        if (multiplier > 0 && self.getHeat() > self.maxHeat() * CNAConfig.server(cfg -> cfg.overheatingMultiplier)) {
             onOverHeat.run();
         }
     }

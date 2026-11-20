@@ -72,7 +72,7 @@ public class ElectricWireItem extends Item {
                 stack.remove(BOUND_TO);
             }
 
-            int maxLength = CNAConfig.getServer().maxWireLength.get();
+            int maxLength = CNAConfig.server(cfg -> cfg.maxWireLength);
 
             if (entity.distanceToSqr(boundToPos.getX(), boundToPos.getY(), boundToPos.getZ()) > (maxLength * maxLength * 3)) {
                 stack.remove(BOUND_TO);
@@ -95,7 +95,7 @@ public class ElectricWireItem extends Item {
                 return InteractionResult.SUCCESS;
             } else {
                 BlockPos clickedPos = clickedConnector.getBlockPos();
-                int maxLength = CNAConfig.getServer().maxWireLength.get();
+                int maxLength = CNAConfig.server(cfg -> cfg.maxWireLength);
 
                 if (boundToPos.equals(clickedPos)) {
                     context.getPlayer().sendOverlayMessage(Component.translatable("item.create_new_age.wire.message.self_connect"));

@@ -81,7 +81,7 @@ public class ReactorHeatVentBlockEntity extends RodFindingReactorBlockEntity imp
     public void tick(BlockPos pos, Level world, BlockState state) {
         tick++;
         if (tick >= 20) {
-            double multiplier = CNAConfig.getServer().overheatingMultiplier.get();
+            double multiplier = CNAConfig.server(cfg -> cfg.overheatingMultiplier);
             HeatBlockEntity.handleOverheat(this);
             tick = 0;
             extract = 0;

@@ -81,11 +81,11 @@ public class StreetLightBlock extends Block implements IBE<StreetLightBlockEntit
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         tooltipComponents.add(CreateLang.translate("tooltip.create_new_age.speed").style(ChatFormatting.GRAY).component());
         tooltipComponents.add(CreateLang.text(" ").translate("tooltip.create_new_age.energy_per_tick",
-                        StringFormatUtil.formatLong(CNAConfig.getServer().streetLightLevelExtraction.get())).style(ChatFormatting.AQUA)
+                        StringFormatUtil.formatLong(CNAConfig.server(cfg -> cfg.streetLightLevelExtraction))).style(ChatFormatting.AQUA)
                 .add(CreateLang.text(" ").translate("tooltip.create_new_age.per_light_level").style(ChatFormatting.GRAY)).component());
         tooltipComponents.add(CreateLang.translate("tooltip.create_new_age.stores").style(ChatFormatting.GRAY).component());
         tooltipComponents.add(CreateLang.text(" ").translate("tooltip.create_new_age.energy",
-                StringFormatUtil.formatLong(CNAConfig.getServer().streetLightCapacity.get())).style(ChatFormatting.AQUA).component());
+                StringFormatUtil.formatLong(CNAConfig.server(cfg -> cfg.streetLightCapacity))).style(ChatFormatting.AQUA).component());
     }
 
     // PORT-NOTE(26.1): onRemove is gone; the connector cleans up in AbstractElectricalConnector.preRemoveSideEffects

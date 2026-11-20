@@ -90,7 +90,7 @@ public class HeaterBlockEntity extends SmartBlockEntity implements HeatBlockEnti
     public float getTierHeat() {
         BlazeBurnerBlock.HeatLevel strength = getBlockState().getValue(HeaterBlock.STRENGTH);
         double heat = 0;
-        Double mult = CNAConfig.getServer().heaterRequiredHeatMultiplier.get();
+        Double mult = CNAConfig.server(cfg -> cfg.heaterRequiredHeatMultiplier);
         switch (strength) {
             case NONE -> {
                 heat = 0;
@@ -113,7 +113,7 @@ public class HeaterBlockEntity extends SmartBlockEntity implements HeatBlockEnti
 
     @Override
     public double getHeatTierMultiplier() {
-        return CNAConfig.getServer().heaterRequiredHeatMultiplier.get();
+        return CNAConfig.server(cfg -> cfg.heaterRequiredHeatMultiplier);
     }
 
     @Override
@@ -122,7 +122,7 @@ public class HeaterBlockEntity extends SmartBlockEntity implements HeatBlockEnti
         BlazeBurnerBlock.HeatLevel strength = getBlockState().getValue(HeaterBlock.STRENGTH);
         double heat = 0;
 
-        Double mult = CNAConfig.getServer().heaterRequiredHeatMultiplier.get();
+        Double mult = CNAConfig.server(cfg -> cfg.heaterRequiredHeatMultiplier);
 
         switch (strength) {
 

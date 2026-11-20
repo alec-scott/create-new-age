@@ -53,7 +53,7 @@ public class NetworkPathManager {
             }
 
             for (AbstractElectricalConnector connector : element.connector.getConnectedConnectors().keySet()) {
-                if (!visited.contains(connector) && element.depth < CNAConfig.getServer().maxPathfindingDepth.get()) {
+                if (!visited.contains(connector) && element.depth < CNAConfig.server(cfg -> cfg.maxPathfindingDepth)) {
                     visited.add(connector);
                     queue.add(new QueueElement(connector, element, element.depth + 1));
                 }

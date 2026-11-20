@@ -109,7 +109,7 @@ public class ElectricalConnectorRenderer<T extends AbstractElectricalConnector> 
                 end.toVector3f(),
                 CNAConfig.getClient().wireSectionsPerMeter.get(),
                 CNAConfig.getClient().wireThickness.get().floatValue(),
-                CNAConfig.getServer().maxWireLength.get()
+                CNAConfig.server(cfg -> cfg.maxWireLength)
         );
         List<float[]> vertices = new ArrayList<>();
         wire.render(vertices, level);
@@ -180,7 +180,7 @@ public class ElectricalConnectorRenderer<T extends AbstractElectricalConnector> 
 
         Identifier texture = wireItem.getWireType().getTextureLocation();
         double distanceSqr = wireEnd.distanceToSqr(wireStart);
-        int maxDistance = CNAConfig.getServer().maxWireLength.get();
+        int maxDistance = CNAConfig.server(cfg -> cfg.maxWireLength);
 
         if (distanceSqr >= (maxDistance * maxDistance)) {
             if (distanceSqr > (maxDistance * maxDistance) * 4) {

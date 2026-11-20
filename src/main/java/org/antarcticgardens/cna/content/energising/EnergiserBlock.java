@@ -36,7 +36,7 @@ public class EnergiserBlock extends HorizontalKineticBlock implements IBE<Energi
     }
 
     public static int getStrength(int tier) {
-        return (int) ((Math.pow(4, tier)) * CNAConfig.getServer().energiserSpeedMultiplier.get());
+        return (int) ((Math.pow(4, tier)) * CNAConfig.server(cfg -> cfg.energiserSpeedMultiplier));
     }
 
     public static long getCapacity(int tier) {
